@@ -25,6 +25,8 @@
     "quotes": ["error", "single", {"avoidEscape": true}],
     "no-irregular-whitespace": "off",
     "no-var-requires": "off",
+    "import/extensions": "off",
+    "no-console": "off",
     "prettier/prettier": [
       "error",
       {
@@ -35,7 +37,9 @@
         "trailingComma": "all",
         "useTabs": false,
         "no-irregular-whitespace": "off",
-        "no-var-requires": "off"
+        "no-var-requires": "off",
+        "import/extensions": "off",
+        "no-console": "off"
       }
     ]
   }
