@@ -8,4 +8,10 @@ router.post('/', (req, res) => {
   return res.send(req.body);
 });
 
+router.get('/:tweetId', (req, res) => {
+  console.log('GET /tweet/:tweetId called');
+  console.log(req.params);
+  return res.send(req.params);
+});
+
 export default router;
