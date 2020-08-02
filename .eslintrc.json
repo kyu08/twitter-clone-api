@@ -23,6 +23,8 @@
   },
   "rules": {
     "quotes": ["error", "single", {"avoidEscape": true}],
+    "no-irregular-whitespace": "off",
+    "no-var-requires": "off",
     "prettier/prettier": [
       "error",
       {
@@ -31,7 +33,9 @@
         "semi": true,
         "singleQuote": true,
         "trailingComma": "all",
-        "useTabs": false
+        "useTabs": false,
+        "no-irregular-whitespace": "off",
+        "no-var-requires": "off"
       }
     ]
   }
