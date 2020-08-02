@@ -1,14 +1,16 @@
 import * as Express from 'express';
 
-const app: any = Express();
+const app = Express();
 
 app.get('/', (req: Express.Request, res: Express.Response) => {
-  return res.send('ieeeeeeeeeeei');
+  console.log('/ called');
+
+  return res.send(JSON.stringify({ a: 'this is json.' }));
 });
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log('Example app listening on port 3000!');
-  console.log(11);
+  console.log('11');
 });
 
 export default app;
