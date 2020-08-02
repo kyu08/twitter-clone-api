@@ -28,4 +28,10 @@ router.get('/:tweetId/retweets', (req, res) => {
   return res.send(`${hoge}RT`);
 });
 
+router.delete('/:tweetId', (req, res) => {
+  console.log('DELETE /tweet/:tweetId called');
+  console.log(req.params);
+  return res.send(`DELETE -> ${req.params}`);
+});
+
 export default router;

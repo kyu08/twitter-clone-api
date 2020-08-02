@@ -30,6 +30,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.config.dev.js && node dist/server.js",
+    "buildw": "webpack --watch --config webpack.config.dev.js && node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "ISC"
