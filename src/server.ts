@@ -1,7 +1,8 @@
 import * as Express from 'express';
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
-import tweet from './router/tweet';
+import tweet from './router/tweetRouter';
+import home from './router/homeRouter';
 
 const app = Express();
 
@@ -11,6 +12,7 @@ app.use(bodyParser.json());
 
 // Router
 app.use('/tweet', tweet);
+app.use('/home', home);
 
 app.get('/', (req: Express.Request, res: Express.Response) => {
   console.log('/ called');

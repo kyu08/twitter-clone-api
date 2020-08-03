@@ -27,6 +27,7 @@
     "no-var-requires": "off",
     "import/extensions": "off",
     "no-console": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
     "prettier/prettier": [
       "error",
       {
@@ -39,7 +40,8 @@
         "no-irregular-whitespace": "off",
         "no-var-requires": "off",
         "import/extensions": "off",
-        "no-console": "off"
+        "no-console": "off",
+        "@typescript-eslint/interface-name-prefix": "off"
       }
     ]
   }
