@@ -6,6 +6,7 @@ import TweetRepository from '../repository/TweetRepository';
 import { IFollowingRepository } from '../model/Following/IFollowingRepository';
 import FollowingRepository from '../repository/FollowingRepository';
 import TweetDataForUI from '../model/TweetDataForUI/TweetDataForUI';
+import { ITweetDataForUI } from '../model/TweetDataForUI/ITweetDataForUI';
 
 export default class HomeApplicationService {
   static readonly userRepository: IUserRepository = new UserRepository();
@@ -14,8 +15,7 @@ export default class HomeApplicationService {
 
   static readonly followingRepository: IFollowingRepository = new FollowingRepository();
 
-  static returnTimeline = (userId: number): any => {
-    // static returnTimeline = (): ITweetDataForUI => {
+  static returnTimeline = (userId: number): ITweetDataForUI[] => {
     const followingUserId: number[] = HomeApplicationService.followingRepository.returnFollowingUserArray(
       userId,
     );
