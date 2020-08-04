@@ -6,7 +6,6 @@ import TweetRepository from '../repository/TweetRepository';
 import { IFollowingRepository } from '../model/Following/IFollowingRepository';
 import FollowingRepository from '../repository/FollowingRepository';
 import TweetDataForUI from '../model/TweetDataForUI/TweetDataForUI';
-// import { ITweetDataForUI } from '../model/TweetDataForUI/ITweetDataForUI';
 
 export default class HomeApplicationService {
   static readonly userRepository: IUserRepository = new UserRepository();
@@ -26,13 +25,17 @@ export default class HomeApplicationService {
     );
 
     return tweetArray.map((t) => {
-      const { userId: userIdOfTweet } = t;
+      const { userId: userIdOfTweet, tweetId } = t;
       const userDataForTweet = HomeApplicationService.userRepository.returnUserData(
         userIdOfTweet,
+      );
+      const countArray = HomeApplicationService.tweetRepository.returnCountArray(
+        tweetId,
       );
       const props = {
         ...t,
         ...userDataForTweet,
+        ...countArray,
       };
 
       return new TweetDataForUI(props);
