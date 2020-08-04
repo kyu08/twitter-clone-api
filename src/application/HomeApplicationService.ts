@@ -1,4 +1,3 @@
-// これは差し替えないやーつなのでインスタンス化せずに静的メソッドで書く
 import { IUserRepository } from '../model/User/IUserRepository';
 import UserRepository from '../repository/UserRepository';
 import { ITweetRepository } from '../model/Tweet/ITweetRepository';
@@ -8,6 +7,7 @@ import FollowingRepository from '../repository/FollowingRepository';
 import TweetDataForUI from '../model/TweetDataForUI/TweetDataForUI';
 import { ITweetDataForUI } from '../model/TweetDataForUI/ITweetDataForUI';
 
+// これは差し替えないやーつなのでインスタンス化せずに静的メソッドで書く
 export default class HomeApplicationService {
   static readonly userRepository: IUserRepository = new UserRepository();
 
