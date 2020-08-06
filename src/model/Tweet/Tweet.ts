@@ -1,6 +1,6 @@
 import { ITweet } from './ITweet';
 
-export interface TweetProps {
+      export interface TweetProps {
   tweetId: number;
   content: string;
   tweetedAt: Date;
