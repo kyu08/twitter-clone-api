@@ -45,13 +45,13 @@ export default class TweetDataForUI implements ITweetDataForUI {
       userImage,
       userName,
     } = props;
-    for (const prop of Object.keys(props)) {
-      // todo ここから
-
-      console.log(props[prop]);
-      // if (props[prop] === undefined)
-      //   throw new Error('some properties is undefined.');
-    }
+    // for (const prop of Object.keys(props)) {
+    //   todo ここから
+    //
+    // console.log(props[prop]);
+    // if (props[prop] === undefined)
+    //   throw new Error('some properties is undefined.');
+    // }
 
     this.likeCount = likeCount;
     this.replyCount = replyCount;

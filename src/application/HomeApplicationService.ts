@@ -25,18 +25,18 @@ export default class HomeApplicationService {
     );
 
     return tweetArray.map((t) => {
-      const { userId: userIdOfTweet } = t;
-      // const { userId: userIdOfTweet, tweetId } = t;
+      // const { userId: userIdOfTweet } = t;
+      const { userId: userIdOfTweet, tweetId } = t;
       const userDataForTweet = HomeApplicationService.userRepository.returnUserData(
         userIdOfTweet,
       );
-      // const countArray = HomeApplicationService.tweetRepository.returnCountArray(
-      //   tweetId,
-      // );
+      const countArray = HomeApplicationService.tweetRepository.returnCountArray(
+        tweetId,
+      );
       const props = {
         ...t,
         ...userDataForTweet,
-        // ...countArray,
+        ...countArray,
       };
 
       return new TweetDataForUI(props);
