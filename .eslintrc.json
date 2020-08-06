@@ -28,6 +28,7 @@
     "import/extensions": "off",
     "no-console": "off",
     "@typescript-eslint/interface-name-prefix": "off",
+    "import/prefer-default-export": "off",
     "prettier/prettier": [
       "error",
       {
@@ -41,7 +42,8 @@
         "no-var-requires": "off",
         "import/extensions": "off",
         "no-console": "off",
-        "@typescript-eslint/interface-name-prefix": "off"
+        "@typescript-eslint/interface-name-prefix": "off",
+        "import/prefer-default-export": "off"
       }
     ]
   }
