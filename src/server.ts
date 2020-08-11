@@ -1,6 +1,7 @@
 import * as Express from 'express';
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
+import { v4 as uuidv4 } from 'uuid';
 import tweet from './router/tweetRouter';
 import home from './router/homeRouter';
 
@@ -16,8 +17,10 @@ app.use('/home', home);
 
 app.get('/', (req: Express.Request, res: Express.Response) => {
   console.log('/ called');
+  const uuid = uuidv4();
+  console.log(uuid);
 
-  return res.send(JSON.stringify(['user1', 'user2']));
+  return res.send(uuid);
 });
 
 app.listen(3001, () => {
