@@ -1,17 +1,20 @@
 import * as Express from 'express';
+// import { response } from 'express';
 import HomeApplicationService from '../application/HomeApplicationService';
 
 const router = Express.Router();
 
 router.get('/:userId', (req, res) => {
   const { userId: userIdString } = req.params;
-  const userId = Number(userIdString);
   // todo Nan 判定必要？
-  const tweetArray = HomeApplicationService.returnTimeline(userId);
-  const tweetArrayJSON = JSON.stringify(tweetArray);
-  console.log(tweetArrayJSON);
-
-  res.send(tweetArrayJSON);
+  const userId = Number(userIdString);
+  HomeApplicationService.returnTimeline(userId)
+    .then((t) => {
+      return JSON.stringify(t);
+    })
+    .then((resJSON) => {
+      res.send(resJSON);
+    });
 });
 
 export default router;

@@ -2,36 +2,27 @@ import * as pg from 'pg';
 import { QueryResult } from 'pg';
 import { CountObject, ITweetRepository } from '../model/Tweet/ITweetRepository';
 import Tweet, { TweetProps } from '../model/Tweet/Tweet';
+import { PGClientConfig } from './DBConfig';
 
 require('dotenv').config();
 
 export default class TweetRepository implements ITweetRepository {
   // DBにアクセス
-  static getTweetArrayFromDB(userIdArray: number[]): TweetProps[] {
-    const client = new pg.Client({
-      user: process.env.USER_NAME,
-      host: process.env.HOST,
-      database: process.env.DATABASE,
-      password: process.env.PASSWORD,
-      port: Number(process.env.PORT),
-    });
-    const query = { text: 'select * from test_table' };
+  static getTweetArrayFromDB(userIdArray: number[]): Promise<TweetProps[]> {
+    const client = new pg.Client(PGClientConfig);
+    const query = { text: 'select * from tweets' };
 
     client.connect();
 
-    client
+    return client
       .query(query)
-      .then((response: QueryResult<any>) => {
-        console.log(response.rows[0]);
+      .then((response: QueryResult<TweetProps>) => {
         client.end();
+        return response.rows;
       })
-      .catch((e: Error) => console.log(e));
-
-    return [
-      { tweetId: 101, content: 'haro', tweetedAt: new Date(), userId: 1 },
-      { tweetId: 102, content: 'test', tweetedAt: new Date(), userId: 2 },
-      { tweetId: 103, content: 'test', tweetedAt: new Date(), userId: 2 },
-    ];
+      .catch((e: Error) => {
+        throw new Error(String(e));
+      });
   }
 
   static create(tweetProps: TweetProps): Tweet {
@@ -48,12 +39,12 @@ export default class TweetRepository implements ITweetRepository {
 
   returnTweetArray(
     userIdArray: number[],
-    // todo ↓いらなくない？
     tweetRepository: ITweetRepository,
-  ): Tweet[] {
-    const tweetProps = TweetRepository.getTweetArrayFromDB(userIdArray);
-    const tweetArray = tweetProps.map((t) => TweetRepository.create(t));
-
-    return tweetArray;
+  ): Promise<Tweet[]> {
+    return TweetRepository.getTweetArrayFromDB(userIdArray)
+      .then((t) => t.map((tt) => TweetRepository.create(tt)))
+      .catch((e) => {
+        throw new Error(String(e));
+      });
   }
 }

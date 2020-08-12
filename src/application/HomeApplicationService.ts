@@ -15,7 +15,7 @@ export default class HomeApplicationService {
 
   static readonly followingRepository: IFollowingRepository = new FollowingRepository();
 
-  static returnTimeline = (userId: number): ITweetDataForUI[] => {
+  static returnTimeline = (userId: number): Promise<ITweetDataForUI[]> => {
     const followingUserId: number[] = HomeApplicationService.followingRepository.returnFollowingUserArray(
       userId,
     );
@@ -24,22 +24,24 @@ export default class HomeApplicationService {
       HomeApplicationService.tweetRepository,
     );
 
-    return tweetArray.map((t) => {
-      // const { userId: userIdOfTweet } = t;
-      const { userId: userIdOfTweet, tweetId } = t;
-      const userDataForTweet = HomeApplicationService.userRepository.returnUserData(
-        userIdOfTweet,
-      );
-      const countArray = HomeApplicationService.tweetRepository.returnCountArray(
-        tweetId,
-      );
-      const props = {
-        ...t,
-        ...userDataForTweet,
-        ...countArray,
-      };
+    return tweetArray.then((tt) =>
+      tt.map((t) => {
+        // const { userId: userIdOfTweet } = t;
+        const { userId: userIdOfTweet, tweetId } = t;
+        const userDataForTweet = HomeApplicationService.userRepository.returnUserData(
+          userIdOfTweet,
+        );
+        const countArray = HomeApplicationService.tweetRepository.returnCountArray(
+          tweetId,
+        );
+        const props = {
+          ...t,
+          ...userDataForTweet,
+          ...countArray,
+        };
 
-      return new TweetDataForUI(props);
-    });
+        return new TweetDataForUI(props);
+      }),
+    );
   };
 }
