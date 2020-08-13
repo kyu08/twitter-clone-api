@@ -10,6 +10,6 @@ export interface ITweetRepository {
   returnTweetArray(
     userIdArray: number[],
     tweetRepository: ITweetRepository,
-  ): Tweet[];
+  ): Promise<Tweet[]>;
   returnCountArray(tweetId: number): CountObject;
 }

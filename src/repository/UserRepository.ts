@@ -1,7 +1,7 @@
 import { IUserRepository } from '../model/User/IUserRepository';
 
 export default class UserRepository implements IUserRepository {
-  private static getUserDataFromDB(usrId: number) {
+  private static getUserDataFromDB(userId: number) {
     const screenNameInDB = 'kyuu08';
     const userImageInDB = 'hoge';
     const userNameInDB = 'kyuushima.com';

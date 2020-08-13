@@ -29,6 +29,7 @@
     "no-console": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "import/prefer-default-export": "off",
+    "@typescript-eslint/camelcase": "off",
     "prettier/prettier": [
       "error",
       {
@@ -43,7 +44,8 @@
         "import/extensions": "off",
         "no-console": "off",
         "@typescript-eslint/interface-name-prefix": "off",
-        "import/prefer-default-export": "off"
+        "import/prefer-default-export": "off",
+        "@typescript-eslint/camelcase": "off"
       }
     ]
   }
