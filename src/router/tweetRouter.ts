@@ -5,12 +5,10 @@ import { QueryResult } from 'pg';
 import { PGClientConfig } from '../repository/DBConfig';
 
 const router = Express.Router();
-
 require('dotenv').config();
 
 router.post('/', (req, res) => {
   console.log('POST /tweet called');
-
   const client = new pg.Client(PGClientConfig);
 
   const { user_id, content } = req.body;
@@ -26,7 +24,8 @@ router.post('/', (req, res) => {
   client
     .query(query)
     .then((response: QueryResult<any>) => {
-      console.log(response.rows[0]);
+      // todo response かこう
+      console.log(response);
       client.end();
     })
     .catch((e: Error) => console.log(e));

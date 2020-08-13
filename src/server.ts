@@ -18,7 +18,6 @@ app.use('/home', home);
 app.get('/', (req: Express.Request, res: Express.Response) => {
   console.log('/ called');
   const uuid = uuidv4();
-  console.log(uuid);
 
   return res.send(uuid);
 });
