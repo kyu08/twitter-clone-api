@@ -3,12 +3,20 @@ import { QueryResult } from 'pg';
 import { CountObject, ITweetRepository } from '../model/Tweet/ITweetRepository';
 import Tweet, { TweetProps } from '../model/Tweet/Tweet';
 import { PGClientConfig } from './DBConfig';
+import { TODO } from '../utils/Util';
 
 require('dotenv').config();
 
+type TweetColumns = {
+  id: string;
+  user_id: string;
+  content: string;
+  created_at: TODO<'Date'>;
+};
+
 export default class TweetRepository implements ITweetRepository {
   // DBにアクセス
-  static getTweetArrayFromDB(userIdArray: number[]): Promise<TweetProps[]> {
+  static getTweetArrayFromDB(userIdArray: number[]): Promise<any[]> {
     const client = new pg.Client(PGClientConfig);
     const query = { text: 'select * from tweets' };
 
@@ -16,9 +24,17 @@ export default class TweetRepository implements ITweetRepository {
 
     return client
       .query(query)
-      .then((response: QueryResult<TweetProps>) => {
+      .then((response: QueryResult<TweetColumns>) => {
         client.end();
-        return response.rows;
+        return response.rows.map((row) => {
+          const { id, user_id, content, created_at } = row;
+          return {
+            tweetId: id,
+            userId: user_id,
+            content,
+            tweetedAt: created_at,
+          };
+        });
       })
       .catch((e: Error) => {
         throw new Error(String(e));
