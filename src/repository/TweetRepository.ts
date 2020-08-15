@@ -32,7 +32,7 @@ export default class TweetRepository implements ITweetRepository {
             tweetId: id,
             userId: user_id,
             content,
-            tweetedAt: created_at,
+            createdAt: created_at,
           };
         });
       })

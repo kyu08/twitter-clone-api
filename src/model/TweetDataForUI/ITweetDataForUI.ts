@@ -7,5 +7,5 @@ export interface ITweetDataForUI {
   readonly likeCount: number;
   readonly replyCount: number;
   readonly retweetCount: number;
-  readonly tweetedAt: Date;
+  readonly createdAt: Date;
 }
