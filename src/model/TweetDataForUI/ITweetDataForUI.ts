@@ -1,6 +1,6 @@
 export interface ITweetDataForUI {
   readonly tweetId: string;
-  readonly userImage: any;
+  readonly userImageURL: string;
   readonly userName: string;
   readonly screenName: string;
   readonly content: string;

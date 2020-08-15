@@ -9,14 +9,14 @@ export interface TweetDataForUIProps {
   likeCount: number;
   replyCount: number;
   retweetCount: number;
-  userImage: TODO<'userImageURL'>;
+  userImageURL: TODO<'userImageURLURL'>;
   userName: string;
 }
 
 export default class TweetDataForUI implements ITweetDataForUI {
   readonly tweetId: string;
 
-  readonly userImage: any;
+  readonly userImageURL: string;
 
   readonly userName: string;
 
@@ -42,7 +42,7 @@ export default class TweetDataForUI implements ITweetDataForUI {
       content,
       tweetId,
       createdAt,
-      userImage,
+      userImageURL,
       userName,
     } = props;
 
@@ -53,7 +53,7 @@ export default class TweetDataForUI implements ITweetDataForUI {
     this.screenName = screenName;
     this.tweetId = tweetId;
     this.createdAt = createdAt;
-    this.userImage = userImage;
+    this.userImageURL = userImageURL;
     this.userName = userName;
   }
 }
