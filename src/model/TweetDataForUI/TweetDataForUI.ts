@@ -2,7 +2,7 @@ import { ITweetDataForUI } from './ITweetDataForUI';
 import { TODO } from '../../utils/Util';
 
 export interface TweetDataForUIProps {
-  tweetId: number;
+  tweetId: string;
   screenName: string;
   tweetedAt: Date;
   content: string;
@@ -14,7 +14,7 @@ export interface TweetDataForUIProps {
 }
 
 export default class TweetDataForUI implements ITweetDataForUI {
-  readonly tweetId: number;
+  readonly tweetId: string;
 
   // todo 画像どう扱おう
   readonly userImage: any;

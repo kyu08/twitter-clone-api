@@ -1,3 +1,3 @@
 export interface IUserRepository {
-  returnUserData(userId: number): any;
+  returnUserData(userId: string): any;
 }

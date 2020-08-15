@@ -16,7 +16,7 @@ type TweetColumns = {
 
 export default class TweetRepository implements ITweetRepository {
   // DBにアクセス
-  static getTweetArrayFromDB(userIdArray: number[]): Promise<any[]> {
+  static getTweetArrayFromDB(userIdArray: string[]): Promise<any[]> {
     const client = new pg.Client(PGClientConfig);
     const query = { text: 'select * from tweets' };
 
@@ -45,7 +45,7 @@ export default class TweetRepository implements ITweetRepository {
     return new Tweet(tweetProps);
   }
 
-  returnCountArray(tweetId: number): CountObject {
+  returnCountArray(tweetId: string): CountObject {
     const replyCount = 30;
     const likeCount = 32;
     const retweetCount = 33;
@@ -54,7 +54,7 @@ export default class TweetRepository implements ITweetRepository {
   }
 
   returnTweetArray(
-    userIdArray: number[],
+    userIdArray: string[],
     tweetRepository: ITweetRepository,
   ): Promise<Tweet[]> {
     return TweetRepository.getTweetArrayFromDB(userIdArray)

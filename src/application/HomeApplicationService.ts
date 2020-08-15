@@ -15,8 +15,8 @@ export default class HomeApplicationService {
 
   static readonly followingRepository: IFollowingRepository = new FollowingRepository();
 
-  static returnTimeline = (userId: number): Promise<ITweetDataForUI[]> => {
-    const followingUserId: number[] = HomeApplicationService.followingRepository.returnFollowingUserArray(
+  static returnTimeline = (userId: string): Promise<ITweetDataForUI[]> => {
+    const followingUserId: string[] = HomeApplicationService.followingRepository.returnFollowingUserArray(
       userId,
     );
     return HomeApplicationService.tweetRepository

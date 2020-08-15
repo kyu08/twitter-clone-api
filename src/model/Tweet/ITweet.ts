@@ -1,6 +1,6 @@
 export interface ITweet {
-  readonly tweetId: number;
+  readonly tweetId: string;
   readonly content: string;
   readonly tweetedAt: Date;
-  readonly userId: number;
+  readonly userId: string;
 }
