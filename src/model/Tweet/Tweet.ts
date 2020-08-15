@@ -1,26 +1,26 @@
 import { ITweet } from './ITweet';
 
 export interface TweetProps {
-  tweetId: number;
+  tweetId: string;
   content: string;
-  tweetedAt: Date;
-  userId: number;
+  createdAt: Date;
+  userId: string;
 }
 
 export default class Tweet implements ITweet {
-  readonly tweetId: number;
+  readonly tweetId: string;
 
   readonly content: string;
 
-  readonly tweetedAt: Date;
+  readonly createdAt: Date;
 
-  readonly userId: number;
+  readonly userId: string;
 
   constructor(props: TweetProps) {
-    const { content, tweetId, tweetedAt, userId } = props;
+    const { content, tweetId, createdAt, userId } = props;
     this.content = content;
     this.tweetId = tweetId;
-    this.tweetedAt = tweetedAt;
+    this.createdAt = createdAt;
     this.userId = userId;
   }
 }

@@ -1,19 +1,20 @@
 import { IUserRepository } from '../model/User/IUserRepository';
+import { TODO } from '../utils/Util';
 
 export default class UserRepository implements IUserRepository {
-  private static getUserDataFromDB(userId: number) {
+  private static getUserDataFromDB(userId: string) {
     const screenNameInDB = 'kyuu08';
-    const userImageInDB = 'hoge';
+    const userImageURLInDB = 'hoge';
     const userNameInDB = 'kyuushima.com';
 
     return {
       screenName: screenNameInDB,
-      userImage: userImageInDB,
+      userImageURL: userImageURLInDB,
       userName: userNameInDB,
     };
   }
 
-  returnUserData(userId: number): any {
+  returnUserData(userId: string): TODO<'userDataForTweet'> {
     return UserRepository.getUserDataFromDB(userId);
   }
 }

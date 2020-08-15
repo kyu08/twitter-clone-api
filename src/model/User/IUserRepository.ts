@@ -1,3 +1,5 @@
+import { TODO } from '../../utils/Util';
+
 export interface IUserRepository {
-  returnUserData(userId: number): any;
+  returnUserData(userId: string): TODO<'userDataForTweet'>;
 }

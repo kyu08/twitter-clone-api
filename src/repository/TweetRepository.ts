@@ -3,7 +3,6 @@ import { QueryResult } from 'pg';
 import { CountObject, ITweetRepository } from '../model/Tweet/ITweetRepository';
 import Tweet, { TweetProps } from '../model/Tweet/Tweet';
 import { PGClientConfig } from './DBConfig';
-import { TODO } from '../utils/Util';
 
 require('dotenv').config();
 
@@ -11,12 +10,19 @@ type TweetColumns = {
   id: string;
   user_id: string;
   content: string;
-  created_at: TODO<'Date'>;
+  created_at: Date;
+};
+
+type TweetData = {
+  tweetId: string;
+  userId: string;
+  content: string;
+  createdAt: Date;
 };
 
 export default class TweetRepository implements ITweetRepository {
   // DBにアクセス
-  static getTweetArrayFromDB(userIdArray: number[]): Promise<any[]> {
+  static getTweetArrayFromDB(userIdArray: string[]): Promise<TweetData[]> {
     const client = new pg.Client(PGClientConfig);
     const query = { text: 'select * from tweets' };
 
@@ -32,7 +38,7 @@ export default class TweetRepository implements ITweetRepository {
             tweetId: id,
             userId: user_id,
             content,
-            tweetedAt: created_at,
+            createdAt: created_at,
           };
         });
       })
@@ -45,7 +51,7 @@ export default class TweetRepository implements ITweetRepository {
     return new Tweet(tweetProps);
   }
 
-  returnCountArray(tweetId: number): CountObject {
+  returnCountArray(tweetId: string): CountObject {
     const replyCount = 30;
     const likeCount = 32;
     const retweetCount = 33;
@@ -54,7 +60,7 @@ export default class TweetRepository implements ITweetRepository {
   }
 
   returnTweetArray(
-    userIdArray: number[],
+    userIdArray: string[],
     tweetRepository: ITweetRepository,
   ): Promise<Tweet[]> {
     return TweetRepository.getTweetArrayFromDB(userIdArray)

@@ -8,8 +8,8 @@ export interface CountObject {
 
 export interface ITweetRepository {
   returnTweetArray(
-    userIdArray: number[],
+    userIdArray: string[],
     tweetRepository: ITweetRepository,
   ): Promise<Tweet[]>;
-  returnCountArray(tweetId: number): CountObject;
+  returnCountArray(tweetId: string): CountObject;
 }

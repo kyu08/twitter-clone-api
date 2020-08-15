@@ -1,23 +1,22 @@
 import { ITweetDataForUI } from './ITweetDataForUI';
-import { TODO } from '../../utils/Util';
+import { ensurePropsContainsNoUndefined, TODO } from '../../utils/Util';
 
 export interface TweetDataForUIProps {
-  tweetId: number;
+  tweetId: string;
   screenName: string;
-  tweetedAt: Date;
+  createdAt: Date;
   content: string;
   likeCount: number;
   replyCount: number;
   retweetCount: number;
-  userImage: TODO<'userImageURL'>;
+  userImageURL: TODO<'userImageURLURL'>;
   userName: string;
 }
 
 export default class TweetDataForUI implements ITweetDataForUI {
-  readonly tweetId: number;
+  readonly tweetId: string;
 
-  // todo 画像どう扱おう
-  readonly userImage: any;
+  readonly userImageURL: string;
 
   readonly userName: string;
 
@@ -31,9 +30,10 @@ export default class TweetDataForUI implements ITweetDataForUI {
 
   readonly retweetCount: number;
 
-  readonly tweetedAt: Date;
+  readonly createdAt: Date;
 
   constructor(props: TweetDataForUIProps) {
+    ensurePropsContainsNoUndefined<TweetDataForUIProps>(props);
     const {
       likeCount,
       replyCount,
@@ -41,17 +41,10 @@ export default class TweetDataForUI implements ITweetDataForUI {
       screenName,
       content,
       tweetId,
-      tweetedAt,
-      userImage,
+      createdAt,
+      userImageURL,
       userName,
     } = props;
-    // for (const prop of Object.keys(props)) {
-    //   todo ここから
-    //
-    // console.log(props[prop]);
-    // if (props[prop] === undefined)
-    //   throw new Error('some properties is undefined.');
-    // }
 
     this.likeCount = likeCount;
     this.replyCount = replyCount;
@@ -59,8 +52,8 @@ export default class TweetDataForUI implements ITweetDataForUI {
     this.content = content;
     this.screenName = screenName;
     this.tweetId = tweetId;
-    this.tweetedAt = tweetedAt;
-    this.userImage = userImage;
+    this.createdAt = createdAt;
+    this.userImageURL = userImageURL;
     this.userName = userName;
   }
 }

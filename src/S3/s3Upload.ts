@@ -5,7 +5,7 @@ require('dotenv').config();
 
 AWS.config.logger = console; // 通信のデバッグ用。不要であれば削除可。
 
-export const uploadToS3 = (userId: number, image: any) => {
+export const uploadToS3 = (userId: string, image: any) => {
   const accessKeyId = process.env.ACCESS_KEY_ID;
   const secretAccessKey = process.env.SECRET_ACCESS_KEY;
   const bucketName = process.env.BUCKET_NAME;

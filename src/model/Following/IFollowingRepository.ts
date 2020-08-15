@@ -1,3 +1,3 @@
 export interface IFollowingRepository {
-  returnFollowingUserArray(userId: number): any;
+  returnFollowingUserArray(userId: string): string[];
 }
