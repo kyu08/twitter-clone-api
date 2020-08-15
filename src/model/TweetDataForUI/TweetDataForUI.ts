@@ -1,5 +1,5 @@
 import { ITweetDataForUI } from './ITweetDataForUI';
-import { TODO } from '../../utils/Util';
+import { ensurePropsContainsNoUndefined, TODO } from '../../utils/Util';
 
 export interface TweetDataForUIProps {
   tweetId: string;
@@ -16,7 +16,6 @@ export interface TweetDataForUIProps {
 export default class TweetDataForUI implements ITweetDataForUI {
   readonly tweetId: string;
 
-  // todo 画像どう扱おう
   readonly userImage: any;
 
   readonly userName: string;
@@ -34,6 +33,7 @@ export default class TweetDataForUI implements ITweetDataForUI {
   readonly createdAt: Date;
 
   constructor(props: TweetDataForUIProps) {
+    ensurePropsContainsNoUndefined<TweetDataForUIProps>(props);
     const {
       likeCount,
       replyCount,
