@@ -24,8 +24,6 @@ router.post('/', (req, res) => {
   client
     .query(query)
     .then((response: QueryResult<any>) => {
-      // todo response かこう
-      console.log(response);
       client.end();
     })
     .catch((e: Error) => console.log(e));

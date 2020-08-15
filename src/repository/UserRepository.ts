@@ -1,4 +1,5 @@
 import { IUserRepository } from '../model/User/IUserRepository';
+import { TODO } from '../utils/Util';
 
 export default class UserRepository implements IUserRepository {
   private static getUserDataFromDB(userId: string) {
@@ -13,7 +14,7 @@ export default class UserRepository implements IUserRepository {
     };
   }
 
-  returnUserData(userId: string): any {
+  returnUserData(userId: string): TODO<'userDataForTweet'> {
     return UserRepository.getUserDataFromDB(userId);
   }
 }
