@@ -31,8 +31,7 @@ export type UserDataFull = {
 };
 
 export default class UserRepository implements IUserRepository {
-  // todo 型かこう
-  private static getUserDataFromDB(userId: string): Promise<any> {
+  private static getUserDataFromDB(userId: string): Promise<UserDataForTweet> {
     const client = new pg.Client(PGClientConfig);
     const query = {
       text:
@@ -80,7 +79,7 @@ export default class UserRepository implements IUserRepository {
 
     return client
       .query(query)
-      .then((response: QueryResult<any>) => {
+      .then((response: QueryResult) => {
         client.end();
         return response.rows[0];
       })
