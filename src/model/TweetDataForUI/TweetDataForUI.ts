@@ -9,7 +9,7 @@ export interface TweetDataForUIProps {
   likeCount: number;
   replyCount: number;
   retweetCount: number;
-  userImageURL: TODO<'userImageURLURL'>;
+  userImageURL: TODO<'userImageURL'>;
   userName: string;
 }
 

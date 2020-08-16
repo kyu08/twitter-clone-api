@@ -5,7 +5,6 @@ import { QueryResult } from 'pg';
 import { PGClientConfig } from '../repository/DBConfig';
 
 const router = Express.Router();
-require('dotenv').config();
 
 router.post('/', (req, res) => {
   console.log('POST /tweet called');

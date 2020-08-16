@@ -4,8 +4,6 @@ import { CountObject, ITweetRepository } from '../model/Tweet/ITweetRepository';
 import Tweet, { TweetProps } from '../model/Tweet/Tweet';
 import { PGClientConfig } from './DBConfig';
 
-require('dotenv').config();
-
 type TweetColumns = {
   id: string;
   user_id: string;
