@@ -3,12 +3,15 @@ import { UserApplicationService } from '../application/UserApplicationService';
 
 const router = Express.Router();
 
-router.get('/:userId/full', (req, res) => {
+router.get('/:userId/full', async (req, res) => {
   console.log('GET /user/:userId/full called');
   const { userId } = req.params;
-  UserApplicationService.getFull(userId)
-    .then((userData) => res.send(userData))
-    .catch((e: Error) => console.log(e));
+  try {
+    const userData = await UserApplicationService.getFull(userId);
+    res.send(userData);
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 export default router;

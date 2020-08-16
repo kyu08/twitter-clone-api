@@ -31,7 +31,9 @@ export type UserDataFull = {
 };
 
 export default class UserRepository implements IUserRepository {
-  private static getUserDataFromDB(userId: string): Promise<UserDataForTweet> {
+  private static async getUserDataFromDB(
+    userId: string,
+  ): Promise<UserDataForTweet> {
     const client = new pg.Client(PGClientConfig);
     const query = {
       text:
@@ -40,32 +42,27 @@ export default class UserRepository implements IUserRepository {
     };
 
     client.connect();
-
-    return client
-      .query(query)
-      .then((response: QueryResult<UserColumnsForTweet>) => {
-        client.end();
-        const {
-          screen_name: screenName,
-          user_name: userName,
-          user_image_url: userImageURL,
-        } = response.rows[0];
-        return {
-          screenName,
-          userImageURL,
-          userName,
-        };
-      })
-      .catch((e: Error) => {
-        throw new Error(String(e));
-      });
+    try {
+      const response: QueryResult<UserColumnsForTweet> = await client.query(
+        query,
+      );
+      client.end();
+      const {
+        screen_name: screenName,
+        user_name: userName,
+        user_image_url: userImageURL,
+      } = response.rows[0];
+      return { screenName, userImageURL, userName };
+    } catch (e) {
+      return e;
+    }
   }
 
   returnUserData(userId: string): Promise<UserDataForTweet> {
     return UserRepository.getUserDataFromDB(userId);
   }
 
-  getFull(userId: string): Promise<UserDataFull> {
+  async getFull(userId: string): Promise<UserDataFull> {
     const client = new pg.Client(PGClientConfig);
     const query = {
       text:
@@ -76,13 +73,12 @@ export default class UserRepository implements IUserRepository {
     };
 
     client.connect();
-
-    return client
-      .query(query)
-      .then((response: QueryResult) => {
-        client.end();
-        return response.rows[0];
-      })
-      .catch((e: Error) => console.log(e));
+    try {
+      const response: QueryResult = await client.query(query);
+      client.end();
+      return response.rows[0];
+    } catch (e) {
+      return e;
+    }
   }
 }

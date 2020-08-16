@@ -19,29 +19,24 @@ type TweetData = {
   createdAt: Date;
 };
 export default class TweetRepository implements ITweetRepository {
-  static getTweetArrayFromDB(userIdArray: string[]): Promise<TweetData[]> {
+  static async getTweetArrayFromDB(
+    userIdArray: string[],
+  ): Promise<TweetData[]> {
     const client = new pg.Client(PGClientConfig);
     const query = { text: 'select * from tweets' };
 
     client.connect();
-
-    return client
-      .query(query)
-      .then((response: QueryResult<TweetColumns>) => {
-        client.end();
-        return response.rows.map((row) => {
-          const { id, user_id, content, created_at } = row;
-          return {
-            tweetId: id,
-            userId: user_id,
-            content,
-            createdAt: created_at,
-          };
-        });
-      })
-      .catch((e: Error) => {
-        throw new Error(String(e));
-      });
+    const response: QueryResult<TweetColumns> = await client.query(query);
+    client.end();
+    return response.rows.map((row) => {
+      const { id, user_id, content, created_at } = row;
+      return {
+        tweetId: id,
+        userId: user_id,
+        content,
+        createdAt: created_at,
+      };
+    });
   }
 
   static create(tweetProps: TweetProps): Tweet {
@@ -56,17 +51,20 @@ export default class TweetRepository implements ITweetRepository {
     return { replyCount, likeCount, retweetCount };
   }
 
-  returnTweetArray(
+  async returnTweetArray(
     userIdArray: string[],
     tweetRepository: ITweetRepository,
   ): Promise<Tweet[]> {
-    return TweetRepository.getTweetArrayFromDB(userIdArray)
-      .then((tweetDataArray) =>
-        tweetDataArray.map((tweetData) => TweetRepository.create(tweetData)),
-      )
-      .catch((e) => {
-        throw new Error(String(e));
-      });
+    try {
+      const tweetDataArray = await TweetRepository.getTweetArrayFromDB(
+        userIdArray,
+      );
+      return tweetDataArray.map((tweetData) =>
+        TweetRepository.create(tweetData),
+      );
+    } catch (e) {
+      return e;
+    }
   }
 
   post(user_id: string, content: string): void {

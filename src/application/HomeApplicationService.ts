@@ -1,5 +1,5 @@
 import { IUserRepository } from '../model/User/IUserRepository';
-import UserRepository, { UserDataForTweet } from '../repository/UserRepository';
+import UserRepository from '../repository/UserRepository';
 import { ITweetRepository } from '../model/Tweet/ITweetRepository';
 import TweetRepository from '../repository/TweetRepository';
 import { IFollowingRepository } from '../model/Following/IFollowingRepository';
@@ -7,7 +7,6 @@ import FollowingRepository from '../repository/FollowingRepository';
 import TweetDataForUI, {
   TweetDataForUIProps,
 } from '../model/TweetDataForUI/TweetDataForUI';
-import Tweet from '../model/Tweet/Tweet';
 import { ITweetDataForUI } from '../model/TweetDataForUI/ITweetDataForUI';
 
 // これは差し替えないやーつなのでインスタンス化せずに静的メソッドで書く
@@ -18,34 +17,32 @@ export default class HomeApplicationService {
 
   static readonly followingRepository: IFollowingRepository = new FollowingRepository();
 
-  static returnTimeline = (userId: string): Promise<ITweetDataForUI[]> => {
+  static returnTimeline = async (
+    userId: string,
+  ): Promise<ITweetDataForUI[]> => {
     const followingUserId: string[] = HomeApplicationService.followingRepository.returnFollowingUserArray(
       userId,
     );
-    return HomeApplicationService.tweetRepository
-      .returnTweetArray(followingUserId, HomeApplicationService.tweetRepository)
-      .then((tweetArray: Tweet[]) => {
-        return Promise.all(
-          tweetArray.map((tweet) => {
-            const { userId: userIdOfTweet, tweetId } = tweet;
-            return HomeApplicationService.userRepository
-              .returnUserData(userIdOfTweet)
-              .then(
-                (userData: UserDataForTweet): TweetDataForUI => {
-                  const countArray = HomeApplicationService.tweetRepository.returnCountArray(
-                    tweetId,
-                  );
-                  const props: TweetDataForUIProps = {
-                    ...tweet,
-                    ...userData,
-                    ...countArray,
-                  };
-                  return new TweetDataForUI(props);
-                },
-              )
-              .catch((e: Error) => console.log(e));
-          }),
+    const tweetArray = await HomeApplicationService.tweetRepository.returnTweetArray(
+      followingUserId,
+      HomeApplicationService.tweetRepository,
+    );
+    return Promise.all(
+      tweetArray.map(async (tweet) => {
+        const { userId: userIdOfTweet, tweetId } = tweet;
+        const userData = await HomeApplicationService.userRepository.returnUserData(
+          userIdOfTweet,
         );
-      });
+        const countArray = HomeApplicationService.tweetRepository.returnCountArray(
+          tweetId,
+        );
+        const props: TweetDataForUIProps = {
+          ...tweet,
+          ...userData,
+          ...countArray,
+        };
+        return new TweetDataForUI(props);
+      }),
+    );
   };
 }
