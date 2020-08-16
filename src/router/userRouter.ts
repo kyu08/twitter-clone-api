@@ -7,6 +7,7 @@ const router = Express.Router();
 
 router.get('/', (req, res) => {
   console.log('GET /user called');
+  // todo db にアクセスするのは repository でやろう
   const client = new pg.Client(PGClientConfig);
   const id = 'e15a1c26-9a65-4f89-91b0-99b2055ae26f';
   const query = {

@@ -8,6 +8,7 @@ const router = Express.Router();
 
 router.post('/', (req, res) => {
   console.log('POST /tweet called');
+  // todo db にアクセスするのは repository でやろう
   const client = new pg.Client(PGClientConfig);
 
   const { user_id, content } = req.body;

@@ -1,21 +1,52 @@
+import * as pg from 'pg';
+import { QueryResult } from 'pg';
 import { IUserRepository } from '../model/User/IUserRepository';
-import { TODO } from '../utils/Util';
+import { PGClientConfig } from './DBConfig';
+
+type UserColumnsForTweet = {
+  screen_name: string;
+  user_name: string;
+  user_image_url: string;
+};
+
+export type UserDataForTweet = {
+  screenName: string;
+  userImageURL: string;
+  userName: string;
+};
 
 export default class UserRepository implements IUserRepository {
-  private static getUserDataFromDB(userId: string) {
-    const screenNameInDB = 'kyuu08';
-    const userImageURLInDB =
-      'https://test-kyu08.s3-ap-northeast-1.amazonaws.com/userImage/default-user-image.png';
-    const userNameInDB = 'kyuushima.com';
-
-    return {
-      screenName: screenNameInDB,
-      userImageURL: userImageURLInDB,
-      userName: userNameInDB,
+  private static getUserDataFromDB(userId: string): Promise<any> {
+    const client = new pg.Client(PGClientConfig);
+    const query = {
+      text:
+        'select screen_name, user_name, user_image_url from users WHERE id=$1',
+      values: [userId],
     };
+
+    client.connect();
+
+    return client
+      .query(query)
+      .then((response: QueryResult<UserColumnsForTweet>) => {
+        client.end();
+        const {
+          screen_name: screenName,
+          user_name: userName,
+          user_image_url: userImageURL,
+        } = response.rows[0];
+        return {
+          screenName,
+          userImageURL,
+          userName,
+        };
+      })
+      .catch((e: Error) => {
+        throw new Error(String(e));
+      });
   }
 
-  returnUserData(userId: string): TODO<'userDataForTweet'> {
+  returnUserData(userId: string): Promise<UserDataForTweet> {
     return UserRepository.getUserDataFromDB(userId);
   }
 }

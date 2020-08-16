@@ -5,12 +5,15 @@ const router = Express.Router();
 
 router.get('/:userId', (req, res) => {
   const { userId } = req.params;
-  HomeApplicationService.returnTimeline(userId)
+  return HomeApplicationService.returnTimeline(userId)
     .then((t) => {
       return JSON.stringify(t);
     })
     .then((resJSON) => {
       res.send(resJSON);
+    })
+    .catch((e: Error) => {
+      console.log(e);
     });
 });
 

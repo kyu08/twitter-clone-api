@@ -62,7 +62,9 @@ export default class TweetRepository implements ITweetRepository {
     tweetRepository: ITweetRepository,
   ): Promise<Tweet[]> {
     return TweetRepository.getTweetArrayFromDB(userIdArray)
-      .then((t) => t.map((tt) => TweetRepository.create(tt)))
+      .then((tweetDataArray) =>
+        tweetDataArray.map((tweetData) => TweetRepository.create(tweetData)),
+      )
       .catch((e) => {
         throw new Error(String(e));
       });
