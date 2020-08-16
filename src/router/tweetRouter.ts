@@ -1,32 +1,12 @@
 import * as Express from 'express';
-import * as pg from 'pg';
-import { v4 as uuidv4 } from 'uuid';
-import { QueryResult } from 'pg';
-import { PGClientConfig } from '../repository/DBConfig';
+import { TweetApplicationService } from '../application/TweetApplicationService';
 
 const router = Express.Router();
 
 router.post('/', (req, res) => {
   console.log('POST /tweet called');
-  // todo db にアクセスするのは repository でやろう
-  const client = new pg.Client(PGClientConfig);
-
   const { user_id, content } = req.body;
-  const id = uuidv4();
-  const created_at = new Date();
-  const query = {
-    text: 'INSERT INTO tweets VALUES($1, $2, $3, $4)',
-    values: [id, user_id, content, created_at],
-  };
-
-  client.connect();
-
-  client
-    .query(query)
-    .then((response: QueryResult<any>) => {
-      client.end();
-    })
-    .catch((e: Error) => console.log(e));
+  TweetApplicationService.post(user_id, content);
 
   return res.send(req.body);
 });

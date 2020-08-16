@@ -1,5 +1,6 @@
 import * as pg from 'pg';
 import { QueryResult } from 'pg';
+// eslint-disable-next-line import/no-cycle
 import { IUserRepository } from '../model/User/IUserRepository';
 import { PGClientConfig } from './DBConfig';
 
@@ -15,7 +16,22 @@ export type UserDataForTweet = {
   userName: string;
 };
 
+// todo user系の class に移動しよう
+export type UserDataFull = {
+  id: string;
+  screen_name: string;
+  user_name: string;
+  header_image_url: string;
+  user_image_url: string;
+  bio: string;
+  birthday: Date;
+  user_location: string;
+  website: string;
+  created_at: Date;
+};
+
 export default class UserRepository implements IUserRepository {
+  // todo 型かこう
   private static getUserDataFromDB(userId: string): Promise<any> {
     const client = new pg.Client(PGClientConfig);
     const query = {
@@ -48,5 +64,26 @@ export default class UserRepository implements IUserRepository {
 
   returnUserData(userId: string): Promise<UserDataForTweet> {
     return UserRepository.getUserDataFromDB(userId);
+  }
+
+  getFull(userId: string): Promise<UserDataFull> {
+    const client = new pg.Client(PGClientConfig);
+    const query = {
+      text:
+        'SELECT ' +
+        'id, screen_name, user_name, header_image_url, user_image_url, bio, birthday, user_location, website, created_at ' +
+        'FROM users WHERE id=$1',
+      values: [userId],
+    };
+
+    client.connect();
+
+    return client
+      .query(query)
+      .then((response: QueryResult<any>) => {
+        client.end();
+        return response.rows[0];
+      })
+      .catch((e: Error) => console.log(e));
   }
 }

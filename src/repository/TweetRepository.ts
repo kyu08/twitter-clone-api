@@ -1,5 +1,6 @@
 import * as pg from 'pg';
 import { QueryResult } from 'pg';
+import { v4 as uuidv4 } from 'uuid';
 import { CountObject, ITweetRepository } from '../model/Tweet/ITweetRepository';
 import Tweet, { TweetProps } from '../model/Tweet/Tweet';
 import { PGClientConfig } from './DBConfig';
@@ -17,9 +18,7 @@ type TweetData = {
   content: string;
   createdAt: Date;
 };
-
 export default class TweetRepository implements ITweetRepository {
-  // DBにアクセス
   static getTweetArrayFromDB(userIdArray: string[]): Promise<TweetData[]> {
     const client = new pg.Client(PGClientConfig);
     const query = { text: 'select * from tweets' };
@@ -68,5 +67,24 @@ export default class TweetRepository implements ITweetRepository {
       .catch((e) => {
         throw new Error(String(e));
       });
+  }
+
+  post(user_id: string, content: string): void {
+    const client = new pg.Client(PGClientConfig);
+    const id = uuidv4();
+    const created_at = new Date();
+    const query = {
+      text: 'INSERT INTO tweets VALUES($1, $2, $3, $4)',
+      values: [id, user_id, content, created_at],
+    };
+
+    client.connect();
+    client
+      .query(query)
+      .then((response: QueryResult<any>) => {
+        console.log(response);
+        client.end();
+      })
+      .catch((e: Error) => console.log(e));
   }
 }
