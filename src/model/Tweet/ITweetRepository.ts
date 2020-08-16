@@ -12,4 +12,5 @@ export interface ITweetRepository {
     tweetRepository: ITweetRepository,
   ): Promise<Tweet[]>;
   returnCountArray(tweetId: string): CountObject;
+  post(user_id: string, content: string): void;
 }
