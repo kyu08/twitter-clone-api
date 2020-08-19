@@ -1,4 +1,4 @@
-export interface ITweetDataForUI {
+export interface ITweetDataModel {
   readonly tweetId: string;
   readonly userImageURL: string;
   readonly userName: string;

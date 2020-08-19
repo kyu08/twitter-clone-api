@@ -4,10 +4,10 @@ import { ITweetRepository } from '../model/Tweet/ITweetRepository';
 import TweetRepository from '../repository/TweetRepository';
 import { IFollowingRepository } from '../model/Following/IFollowingRepository';
 import FollowingRepository from '../repository/FollowingRepository';
-import TweetDataForUI, {
-  TweetDataForUIProps,
-} from '../model/TweetDataForUI/TweetDataForUI';
-import { ITweetDataForUI } from '../model/TweetDataForUI/ITweetDataForUI';
+import TweetDataModel, {
+  TweetDataModelProps,
+} from '../repository/TweetDataModel';
+import { ITweetDataModel } from '../repository/ITweetDataModel';
 
 // これは差し替えないやーつなのでインスタンス化せずに静的メソッドで書く
 export default class HomeApplicationService {
@@ -19,7 +19,7 @@ export default class HomeApplicationService {
 
   static returnTimeline = async (
     userId: string,
-  ): Promise<ITweetDataForUI[]> => {
+  ): Promise<ITweetDataModel[]> => {
     const followingUserId: string[] = HomeApplicationService.followingRepository.returnFollowingUserArray(
       userId,
     );
@@ -36,12 +36,12 @@ export default class HomeApplicationService {
         const countArray = HomeApplicationService.tweetRepository.returnCountArray(
           tweetId,
         );
-        const props: TweetDataForUIProps = {
+        const props: TweetDataModelProps = {
           ...tweet,
           ...userData,
           ...countArray,
         };
-        return new TweetDataForUI(props);
+        return new TweetDataModel(props);
       }),
     );
   };

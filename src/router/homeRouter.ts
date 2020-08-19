@@ -6,8 +6,8 @@ const router = Express.Router();
 router.get('/:userId', async (req, res) => {
   const { userId } = req.params;
   try {
-    const tweetDataForUI = await HomeApplicationService.returnTimeline(userId);
-    res.send(JSON.stringify(tweetDataForUI));
+    const tweetDataModel = await HomeApplicationService.returnTimeline(userId);
+    res.send(JSON.stringify(tweetDataModel));
   } catch (e) {
     console.log(e);
   }

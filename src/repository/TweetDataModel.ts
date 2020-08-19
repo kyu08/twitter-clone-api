@@ -1,7 +1,7 @@
-import { ITweetDataForUI } from './ITweetDataForUI';
-import { ensurePropsContainsNoUndefined, TODO } from '../../utils/Util';
+import { ITweetDataModel } from './ITweetDataModel';
+import { ensurePropsContainsNoUndefined, TODO } from '../utils/Util';
 
-export interface TweetDataForUIProps {
+export interface TweetDataModelProps {
   tweetId: string;
   screenName: string;
   createdAt: Date;
@@ -13,7 +13,7 @@ export interface TweetDataForUIProps {
   userName: string;
 }
 
-export default class TweetDataForUI implements ITweetDataForUI {
+export default class TweetDataModel implements ITweetDataModel {
   readonly tweetId: string;
 
   readonly userImageURL: string;
@@ -32,8 +32,8 @@ export default class TweetDataForUI implements ITweetDataForUI {
 
   readonly createdAt: Date;
 
-  constructor(props: TweetDataForUIProps) {
-    ensurePropsContainsNoUndefined<TweetDataForUIProps>(props);
+  constructor(props: TweetDataModelProps) {
+    ensurePropsContainsNoUndefined<TweetDataModelProps>(props);
     const {
       likeCount,
       replyCount,
