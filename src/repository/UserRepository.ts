@@ -62,6 +62,7 @@ export default class UserRepository implements IUserRepository {
     return UserRepository.getUserDataFromDB(userId);
   }
 
+  // todo あと followingCount, followerCount も必要だった〜
   async getFull(userId: string): Promise<UserDataFull> {
     const client = new pg.Client(PGClientConfig);
     const query = {
