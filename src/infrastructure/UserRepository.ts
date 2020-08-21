@@ -42,20 +42,16 @@ export default class UserRepository implements IUserRepository {
     };
 
     client.connect();
-    try {
-      const response: QueryResult<UserColumnsForTweet> = await client.query(
-        query,
-      );
-      client.end();
-      const {
-        screen_name: screenName,
-        user_name: userName,
-        user_image_url: userImageURL,
-      } = response.rows[0];
-      return { screenName, userImageURL, userName };
-    } catch (e) {
-      return e;
-    }
+    const response: QueryResult<UserColumnsForTweet> = await client
+      .query(query)
+      .catch((e) => e);
+    client.end();
+    const {
+      screen_name: screenName,
+      user_name: userName,
+      user_image_url: userImageURL,
+    } = response.rows[0];
+    return { screenName, userImageURL, userName };
   }
 
   returnUserData(userId: string): Promise<UserDataForTweet> {
@@ -74,12 +70,8 @@ export default class UserRepository implements IUserRepository {
     };
 
     client.connect();
-    try {
-      const response: QueryResult = await client.query(query);
-      client.end();
-      return response.rows[0];
-    } catch (e) {
-      return e;
-    }
+    const response: QueryResult = await client.query(query).catch((e) => e);
+    client.end();
+    return response.rows[0];
   }
 }
