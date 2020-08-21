@@ -1,5 +1,5 @@
 import { ITweetRepository } from '../model/Tweet/ITweetRepository';
-import TweetRepository from '../repository/TweetRepository';
+import TweetRepository from '../infrastructure/TweetRepository';
 
 export class TweetApplicationService {
   static readonly tweetRepository: ITweetRepository = new TweetRepository();

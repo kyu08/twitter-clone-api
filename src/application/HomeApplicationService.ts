@@ -1,13 +1,13 @@
 import { IUserRepository } from '../model/User/IUserRepository';
-import UserRepository from '../repository/UserRepository';
+import UserRepository from '../infrastructure/UserRepository';
 import { ITweetRepository } from '../model/Tweet/ITweetRepository';
-import TweetRepository from '../repository/TweetRepository';
+import TweetRepository from '../infrastructure/TweetRepository';
 import { IFollowingRepository } from '../model/Following/IFollowingRepository';
-import FollowingRepository from '../repository/FollowingRepository';
+import FollowingRepository from '../infrastructure/FollowingRepository';
 import TweetDataModel, {
   TweetDataModelProps,
-} from '../repository/TweetDataModel';
-import { ITweetDataModel } from '../repository/ITweetDataModel';
+} from '../infrastructure/TweetDataModel';
+import { ITweetDataModel } from '../infrastructure/ITweetDataModel';
 
 // これは差し替えないやーつなのでインスタンス化せずに静的メソッドで書く
 export default class HomeApplicationService {
