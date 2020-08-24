@@ -69,9 +69,12 @@ export default class UserRepository implements IUserRepository {
       values: [userId],
     };
 
+    // todo DBのデータにしよう
+    const countObject = { followerCount: 2, followingCount: 6 };
+
     client.connect();
     const response: QueryResult = await client.query(query).catch((e) => e);
     client.end();
-    return response.rows[0];
+    return { ...response.rows[0], ...countObject };
   }
 }
