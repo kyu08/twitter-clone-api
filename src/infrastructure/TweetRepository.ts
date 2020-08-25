@@ -55,16 +55,13 @@ export default class TweetRepository implements ITweetRepository {
     userIdArray: string[],
     tweetRepository: ITweetRepository,
   ): Promise<Tweet[]> {
-    try {
-      const tweetDataArray = await TweetRepository.getTweetArrayFromDB(
-        userIdArray,
-      );
-      return tweetDataArray.map((tweetData) =>
-        TweetRepository.create(tweetData),
-      );
-    } catch (e) {
-      return e;
-    }
+    const tweetDataArray = await TweetRepository.getTweetArrayFromDB(
+      userIdArray,
+    ).catch((e) => e);
+
+    return tweetDataArray.map((tweetData: TweetData) =>
+      TweetRepository.create(tweetData),
+    );
   }
 
   post(user_id: string, content: string): void {
