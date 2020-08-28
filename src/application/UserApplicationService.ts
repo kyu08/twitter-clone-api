@@ -7,4 +7,10 @@ export class UserApplicationService {
   static getFull(userId: string): Promise<UserDataFull> {
     return UserApplicationService.userRepository.getFull(userId);
   }
+
+  static getFullByScreenName(screenName: string): Promise<UserDataFull> {
+    return UserApplicationService.userRepository.getFullByScreenName(
+      screenName,
+    );
+  }
 }

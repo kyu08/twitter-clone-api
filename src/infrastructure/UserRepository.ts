@@ -74,6 +74,30 @@ export default class UserRepository implements IUserRepository {
     client.connect();
     const response: QueryResult = await client.query(query).catch((e) => e);
     client.end();
+    // null だと 1970/1/1 が入ってしまうので delete
+    if (!response.rows[0].birthday) {
+      delete response.rows[0].birthday;
+    }
+    return { ...response.rows[0], ...countObject };
+  }
+
+  async getFullByScreenName(screenName: string): Promise<UserDataFull> {
+    const client = new pg.Client(PGClientConfig);
+    const query = {
+      text:
+        'SELECT ' +
+        'id, screen_name, user_name, header_image_url, user_image_url, bio, birthday, user_location, website, created_at ' +
+        'FROM users WHERE screen_name=$1',
+      values: [screenName],
+    };
+
+    // todo DBのデータにしよう
+    const countObject = { followerCount: 2, followingCount: 6 };
+
+    client.connect();
+    const response: QueryResult = await client.query(query).catch((e) => e);
+    client.end();
+    // null だと 1970/1/1 が入ってしまうので delete
     if (!response.rows[0].birthday) {
       delete response.rows[0].birthday;
     }
