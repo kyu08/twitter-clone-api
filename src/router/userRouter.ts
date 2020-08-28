@@ -3,7 +3,7 @@ import { UserApplicationService } from '../application/UserApplicationService';
 
 const router = Express.Router();
 
-router.get('/:userId/full', async (req, res) => {
+router.get('/userId/:userId/full', async (req, res) => {
   console.log('GET /user/:userId/full called');
   const { userId } = req.params;
   const userData = await UserApplicationService.getFull(userId).catch((e) =>
