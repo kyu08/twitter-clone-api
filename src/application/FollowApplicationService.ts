@@ -18,4 +18,14 @@ export class FollowApplicationService {
     // if (!this.followRepository.isFollowing) return;
     this.followRepository.unFollow(following_user_id, follower_user_id);
   }
+
+  isFollowing(
+    following_user_id: string,
+    follower_user_id: string,
+  ): Promise<boolean> {
+    return this.followRepository.isFollowing(
+      following_user_id,
+      follower_user_id,
+    );
+  }
 }

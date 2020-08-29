@@ -6,8 +6,8 @@ const followApplicationService = new FollowApplicationService();
 
 router.post('/', async (req, res) => {
   console.log('POST /follow called.');
-  const { userIdFollowing, userIdFollower } = req.body;
-  followApplicationService.follow(userIdFollowing, userIdFollower);
+  const { followingUserId, followerUserId } = req.body;
+  followApplicationService.follow(followingUserId, followerUserId);
   // .catch((e) => {
   //   res.status(400);
   //   res.send('bad request.');
@@ -17,13 +17,26 @@ router.post('/', async (req, res) => {
 
 router.delete('/', async (req, res) => {
   console.log('DELETE /follow called.');
-  const { userIdFollowing, userIdFollower } = req.body;
-  followApplicationService.unFollow(userIdFollowing, userIdFollower);
+  const { followingUserId, followerUserId } = req.body;
+  followApplicationService.unFollow(followingUserId, followerUserId);
   // .catch((e) => {
   //   res.status(400);
   //   res.send('bad request.');
   // });
   res.send('unFollowed.');
+});
+
+router.get('/', async (req, res) => {
+  console.log('get /follow called.');
+  const { followingUserId, followerUserId } = req.query;
+  const isFollowing = await followApplicationService
+    .isFollowing(String(followingUserId), String(followerUserId))
+    .catch((e) => e);
+  // .catch((e) => {
+  //   res.status(400);
+  //   res.send('bad request.');
+  // });
+  res.send(isFollowing);
 });
 
 export default router;
