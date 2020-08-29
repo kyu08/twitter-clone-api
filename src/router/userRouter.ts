@@ -17,6 +17,10 @@ router.get('/screenName/:screenName/full', async (req, res) => {
   const { screenName } = req.params;
   const userData = await UserApplicationService.getFullByScreenName(
     screenName,
+    // todo レスポンスコード　かこう
+    // https://expressjs.com/ja/guide/error-handling.html
+    // たぶん↓でいける
+    // res.status(500);
   ).catch((e) => console.log(e));
   res.send(userData);
 });

@@ -76,7 +76,7 @@ export default class TweetRepository implements ITweetRepository {
     client.connect();
     client
       .query(query)
-      .then((response: QueryResult<any>) => {
+      .then((response: QueryResult) => {
         console.log(response);
         client.end();
       })

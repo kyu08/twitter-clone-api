@@ -28,6 +28,9 @@ export type UserDataFull = {
   user_location: string;
   website: string;
   created_at: Date;
+  followingCount: number;
+  followerCount: number;
+  tweetCount: number;
 };
 
 export default class UserRepository implements IUserRepository {
@@ -68,8 +71,13 @@ export default class UserRepository implements IUserRepository {
       values: [userId],
     };
 
-    // todo DBのデータにしよう
-    const countObject = { followerCount: 2, followingCount: 6 };
+    // todo DBのデータにしよう tweetCount も渡す
+    const countObject = {
+      followerCount: 2,
+      followingCount: 6,
+      // todo あとでやる front 側で User, UserDataModel
+      // tweetCount: 123,
+    };
 
     client.connect();
     const response: QueryResult = await client.query(query).catch((e) => e);
@@ -92,7 +100,12 @@ export default class UserRepository implements IUserRepository {
     };
 
     // todo DBのデータにしよう
-    const countObject = { followerCount: 2, followingCount: 6 };
+    const countObject = {
+      followerCount: 2,
+      followingCount: 6,
+      // todo あとでやる front 側で User, UserDataModel
+      // tweetCount: 123,
+    };
 
     client.connect();
     const response: QueryResult = await client.query(query).catch((e) => e);
