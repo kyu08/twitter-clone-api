@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import tweet from './router/tweetRouter';
 import home from './router/homeRouter';
 import user from './router/userRouter';
+import follow from './router/followRouter';
 
 const app = Express();
 
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 app.use('/tweet', tweet);
 app.use('/home', home);
 app.use('/user', user);
+app.use('/follow', follow);
 
 app.get('/', (req: Express.Request, res: Express.Response) => {
   console.log('/ called');
