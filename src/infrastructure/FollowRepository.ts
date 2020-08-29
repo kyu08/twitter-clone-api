@@ -42,7 +42,7 @@ export class FollowRepository {
   isFollowing(
     following_user_id: string,
     follower_user_id: string,
-  ): Promise<boolean> {
+  ): Promise<boolean | void> {
     const client = new pg.Client(PGClientConfig);
     const query = {
       text:
@@ -51,10 +51,12 @@ export class FollowRepository {
     };
 
     client.connect();
-    return client.query(query).then((response: QueryResult) => {
-      const isFollowing = Boolean(response.rows[0].following_user_id);
-      client.end();
-      return isFollowing;
-    });
+    return client
+      .query(query)
+      .then((response: QueryResult) => {
+        client.end();
+        return response.rows[0] !== undefined;
+      })
+      .catch((e: Error) => console.log(e));
   }
 }
