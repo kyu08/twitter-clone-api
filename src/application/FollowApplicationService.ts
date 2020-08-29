@@ -8,14 +8,26 @@ export class FollowApplicationService {
   }
 
   follow(following_user_id: string, follower_user_id: string): void {
-    // todo isFollowing 判定はここでやる
-    // if (this.followRepository.isFollowing) return;
+    if (
+      this.followRepository.isFollowing(following_user_id, follower_user_id)
+    ) {
+      console.log(
+        'you can not follow this user because you already follow this user.',
+      );
+      return;
+    }
     this.followRepository.follow(following_user_id, follower_user_id);
   }
 
   unFollow(following_user_id: string, follower_user_id: string): void {
-    // todo isFollowing 判定はここでやる
-    // if (!this.followRepository.isFollowing) return;
+    if (
+      !this.followRepository.isFollowing(following_user_id, follower_user_id)
+    ) {
+      console.log(
+        'you can not unFollow this user because you are not following this user.',
+      );
+      return;
+    }
     this.followRepository.unFollow(following_user_id, follower_user_id);
   }
 
