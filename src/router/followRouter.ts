@@ -7,36 +7,47 @@ const followApplicationService = new FollowApplicationService();
 router.post('/', async (req, res) => {
   console.log('POST /follow called.');
   const { followingUserId, followerUserId } = req.body;
+  if (followingUserId === undefined || followerUserId === undefined) {
+    res.status(400);
+    res.send('bad request.(contains undefined)');
+  }
+  console.log(followerUserId, followingUserId);
   followApplicationService.follow(followingUserId, followerUserId);
-  // .catch((e) => {
-  //   res.status(400);
-  //   res.send('bad request.');
-  // });
   res.send('followed.');
 });
 
 router.delete('/', async (req, res) => {
   console.log('DELETE /follow called.');
   const { followingUserId, followerUserId } = req.body;
+  if (followingUserId === undefined || followerUserId === undefined) {
+    res.status(400);
+    res.send('bad request.(contains undefined)');
+  }
   followApplicationService.unFollow(followingUserId, followerUserId);
-  // .catch((e) => {
-  //   res.status(400);
-  //   res.send('bad request.');
-  // });
   res.send('unFollowed.');
 });
 
 router.get('/', async (req, res) => {
   console.log('get /follow called.');
   const { followingUserId, followerUserId } = req.query;
+  console.log('follower, following');
+  console.log(followingUserId, followerUserId);
+  if (followingUserId === undefined || followerUserId === undefined) {
+    res.status(400);
+    res.send('bad request.(contains undefined)');
+  }
+
   const isFollowing = await followApplicationService
     .isFollowing(String(followingUserId), String(followerUserId))
-    .catch((e) => e);
-  // .catch((e) => {
-  //   res.status(400);
-  //   res.send('bad request.');
-  // });
-  res.send(isFollowing);
+    .catch((e) => {
+      console.log(e);
+    });
+  if (typeof isFollowing === 'boolean') {
+    res.send(isFollowing);
+    return;
+  }
+  res.status(400);
+  res.send('bad request.');
 });
 
 export default router;
