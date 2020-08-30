@@ -2,6 +2,12 @@ import * as pg from 'pg';
 import { QueryResult } from 'pg';
 import { PGClientConfig } from './DBConfig';
 
+// todo たぶんここに書くのは適切でない。なんならFollowInfo 自体 instance 化する必要あるかもしれない
+export type FollowInfo = {
+  isFollowing: boolean;
+  isFollowed: boolean;
+};
+
 export class FollowRepository {
   follow(following_user_id: string, follower_user_id: string): void {
     const client = new pg.Client(PGClientConfig);
@@ -39,14 +45,14 @@ export class FollowRepository {
       .catch((e: Error) => console.log(e));
   }
 
-  isFollowing(
+  getFollowInfo(
     following_user_id: string,
     follower_user_id: string,
-  ): Promise<boolean | void> {
+  ): Promise<FollowInfo | void> {
     const client = new pg.Client(PGClientConfig);
     const query = {
       text:
-        'SELECT * FROM user_relation WHERE following_user_id = $1 AND follower_user_id = $2',
+        'SELECT * FROM user_relation WHERE (following_user_id = $1 AND follower_user_id = $2) OR (following_user_id = $2 AND follower_user_id = $1)',
       values: [following_user_id, follower_user_id],
     };
 
@@ -55,7 +61,15 @@ export class FollowRepository {
       .query(query)
       .then((response: QueryResult) => {
         client.end();
-        return response.rows[0] !== undefined;
+        console.log(response.rows);
+        const res = response.rows;
+        const isFollowing =
+          res[0].following_user_id === following_user_id ||
+          res[1].following_user_id === following_user_id;
+        const isFollowed =
+          res[0].follower_user_id === follower_user_id ||
+          res[1].follower_user_id === follower_user_id;
+        return { isFollowing, isFollowed };
       })
       .catch((e: Error) => console.log(e));
   }

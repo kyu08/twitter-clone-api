@@ -1,4 +1,7 @@
-import { FollowRepository } from '../infrastructure/FollowRepository';
+import {
+  FollowInfo,
+  FollowRepository,
+} from '../infrastructure/FollowRepository';
 
 export class FollowApplicationService {
   readonly followRepository: FollowRepository;
@@ -35,11 +38,11 @@ export class FollowApplicationService {
     this.followRepository.unFollow(following_user_id, follower_user_id);
   }
 
-  isFollowing(
+  getFollowInfo(
     following_user_id: string,
     follower_user_id: string,
-  ): Promise<boolean | void> {
-    return this.followRepository.isFollowing(
+  ): Promise<FollowInfo | void> {
+    return this.followRepository.getFollowInfo(
       following_user_id,
       follower_user_id,
     );

@@ -37,13 +37,14 @@ router.get('/', async (req, res) => {
     res.send('bad request.(contains undefined)');
   }
 
-  const isFollowing = await followApplicationService
-    .isFollowing(String(followingUserId), String(followerUserId))
+  const followInfo = await followApplicationService
+    .getFollowInfo(String(followingUserId), String(followerUserId))
     .catch((e) => {
       console.log(e);
     });
-  if (typeof isFollowing === 'boolean') {
-    res.send(isFollowing);
+  // todo あまりよくない気はしている
+  if (typeof followInfo === 'object') {
+    res.send(followInfo);
     return;
   }
   res.status(400);
