@@ -10,10 +10,6 @@ export class FollowApplicationService {
   follow(following_user_id: string, follower_user_id: string): void {
     // todo if文判定式の中身が Promise<Pending>になっちゃうのでうまくいかない
     // issue page -> https://github.com/kyu08/twitter-clone-api/issues/49
-    // console.log('↓ isFollowing @ApplicationService.follow');
-    // console.log(
-    //   this.followRepository.isFollowing(following_user_id, follower_user_id),
-    // );
     // if (
     //   this.followRepository.isFollowing(following_user_id, follower_user_id)
     // ) {
@@ -28,10 +24,6 @@ export class FollowApplicationService {
   unFollow(following_user_id: string, follower_user_id: string): void {
     // todo if文判定式の中身が Promise<Pending>になっちゃうのでうまくいかない
     // issue page -> https://github.com/kyu08/twitter-clone-api/issues/49
-    // console.log('↓ isFollowing @ApplicationService.unFollow');
-    // console.log(
-    //   this.followRepository.isFollowing(following_user_id, follower_user_id),
-    // );
     // if (
     //   !this.followRepository.isFollowing(following_user_id, follower_user_id)
     // ) {

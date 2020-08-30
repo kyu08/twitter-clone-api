@@ -2,11 +2,12 @@ import * as Express from 'express';
 import { TweetApplicationService } from '../application/TweetApplicationService';
 
 const router = Express.Router();
+const tweetApplicationService = new TweetApplicationService();
 
 router.post('/', (req, res) => {
   console.log('POST /tweet called');
   const { user_id, content } = req.body;
-  TweetApplicationService.post(user_id, content);
+  tweetApplicationService.post(user_id, content);
 
   return res.send(req.body);
 });

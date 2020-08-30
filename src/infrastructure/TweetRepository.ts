@@ -19,9 +19,7 @@ type TweetData = {
   createdAt: Date;
 };
 export default class TweetRepository implements ITweetRepository {
-  static async getTweetArrayFromDB(
-    userIdArray: string[],
-  ): Promise<TweetData[]> {
+  async getTweetArrayFromDB(userIdArray: string[]): Promise<TweetData[]> {
     const client = new pg.Client(PGClientConfig);
     const query = { text: 'select * from tweets' };
 
@@ -39,7 +37,7 @@ export default class TweetRepository implements ITweetRepository {
     });
   }
 
-  static create(tweetProps: TweetProps): Tweet {
+  create(tweetProps: TweetProps): Tweet {
     return new Tweet(tweetProps);
   }
 
@@ -55,13 +53,11 @@ export default class TweetRepository implements ITweetRepository {
     userIdArray: string[],
     tweetRepository: ITweetRepository,
   ): Promise<Tweet[]> {
-    const tweetDataArray = await TweetRepository.getTweetArrayFromDB(
-      userIdArray,
-    ).catch((e) => e);
-
-    return tweetDataArray.map((tweetData: TweetData) =>
-      TweetRepository.create(tweetData),
+    const tweetDataArray = await this.getTweetArrayFromDB(userIdArray).catch(
+      (e) => e,
     );
+
+    return tweetDataArray.map((tweetData: TweetData) => this.create(tweetData));
   }
 
   post(user_id: string, content: string): void {
