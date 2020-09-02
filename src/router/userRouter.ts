@@ -17,14 +17,11 @@ router.get('/screenName/:screenName/full', async (req, res) => {
   console.log('GET /user/:screenName/full called');
   const { screenName } = req.params;
   const userData = await userApplicationService
-    .getFullByScreenName(
-      screenName,
-      // todo レスポンスコード　かこう
-      // https://expressjs.com/ja/guide/error-handling.html
-      // たぶん↓でいける
-      // res.status(500);
-    )
-    .catch((e) => console.log(e));
+    .getFullByScreenName(String(screenName), String(currentUserId))
+    .catch((e) => {
+      res.status(404);
+      res.send('Not Found.');
+    });
   res.send(userData);
 });
 
