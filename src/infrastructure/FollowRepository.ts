@@ -21,7 +21,6 @@ export class FollowRepository {
     client
       .query(query)
       .then((response: QueryResult) => {
-        console.log(response);
         client.end();
       })
       .catch((e: Error) => console.log(e));
@@ -39,7 +38,6 @@ export class FollowRepository {
     client
       .query(query)
       .then((response: QueryResult) => {
-        console.log(response);
         client.end();
       })
       .catch((e: Error) => console.log(e));
@@ -48,12 +46,41 @@ export class FollowRepository {
   getFollowInfo(
     following_user_id: string,
     follower_user_id: string,
-  ): Promise<FollowInfo | void> {
+  ): Promise<FollowInfo | Error> {
     const client = new pg.Client(PGClientConfig);
     const query = {
       text:
-        'SELECT * FROM user_relation WHERE (following_user_id = $1 AND follower_user_id = $2) OR (following_user_id = $2 AND follower_user_id = $1)',
+        'SELECT following_user_id, follower_user_id FROM user_relation WHERE (following_user_id = $1 AND follower_user_id = $2) OR (following_user_id = $2 AND follower_user_id = $1)',
       values: [following_user_id, follower_user_id],
+    };
+
+    client.connect();
+    return client.query(query).then((response: QueryResult) => {
+      client.end();
+      console.log(response.rows);
+      const res = response.rows;
+      if (!res) throw new Error('there is no record.');
+      // todo けっこうださいのでかきかえよう
+      const isFollowing =
+        res.length === 2
+          ? res[0].following_user_id === following_user_id ||
+            res[1].following_user_id === following_user_id
+          : res[0].following_user_id === following_user_id;
+      const isFollowed =
+        res.length === 2
+          ? res[0].following_user_id === follower_user_id ||
+            res[1].following_user_id === follower_user_id
+          : res[0].following_user_id === follower_user_id;
+
+      return { isFollowing, isFollowed };
+    });
+  }
+
+  getIdByScreenName(screenName: string): Promise<string | Error> {
+    const client = new pg.Client(PGClientConfig);
+    const query = {
+      text: 'SELECT id FROM users WHERE screen_name = $1',
+      values: [screenName],
     };
 
     client.connect();
@@ -61,16 +88,11 @@ export class FollowRepository {
       .query(query)
       .then((response: QueryResult) => {
         client.end();
-        console.log(response.rows);
-        const res = response.rows;
-        const isFollowing =
-          res[0].following_user_id === following_user_id ||
-          res[1].following_user_id === following_user_id;
-        const isFollowed =
-          res[0].follower_user_id === follower_user_id ||
-          res[1].follower_user_id === follower_user_id;
-        return { isFollowing, isFollowed };
+        const userId = response.rows[0].id;
+        if (!userId) throw new Error('there is no user has this screenName.');
+        console.log(userId);
+        return userId;
       })
-      .catch((e: Error) => console.log(e));
+      .catch((e: Error) => e);
   }
 }

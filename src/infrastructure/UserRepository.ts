@@ -55,8 +55,6 @@ export default class UserRepository implements IUserRepository {
     return { screenName, userImageURL, userName };
   }
 
-  // returnUserData(userId: string): Promise<UserDataForTweet> {
-
   async getFull(userId: string): Promise<UserDataFull> {
     const client = new pg.Client(PGClientConfig);
     const query = {

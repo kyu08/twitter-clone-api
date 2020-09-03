@@ -9,6 +9,9 @@ export class TweetApplicationService {
   }
 
   post(user_id: string, content: string): void {
+    // todo domain model 使おう
+    // const tweet = tweetFactory.create(user_id, content);
+    // this.tweetRepository.post(tweet);
     this.tweetRepository.post(user_id, content);
   }
 }

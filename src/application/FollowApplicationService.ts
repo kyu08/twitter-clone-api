@@ -41,7 +41,7 @@ export class FollowApplicationService {
   getFollowInfo(
     following_user_id: string,
     follower_user_id: string,
-  ): Promise<FollowInfo | void> {
+  ): Promise<FollowInfo | Error> {
     return this.followRepository.getFollowInfo(
       following_user_id,
       follower_user_id,

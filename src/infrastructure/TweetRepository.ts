@@ -18,6 +18,7 @@ type TweetData = {
   content: string;
   createdAt: Date;
 };
+
 export default class TweetRepository implements ITweetRepository {
   async getTweetArrayFromDB(userIdArray: string[]): Promise<TweetData[]> {
     const client = new pg.Client(PGClientConfig);

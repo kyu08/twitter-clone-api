@@ -42,6 +42,8 @@ export default class HomeApplicationService {
           ...userData,
           ...countArray,
         };
+
+        // todo これ factory でやる
         return new TweetDataModel(props);
       }),
     );
