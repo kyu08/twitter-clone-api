@@ -2,45 +2,37 @@ import { IUserRepository } from '../model/User/IUserRepository';
 import UserRepository from '../infrastructure/UserRepository';
 import { ITweetRepository } from '../model/Tweet/ITweetRepository';
 import TweetRepository from '../infrastructure/TweetRepository';
-import { IFollowingRepository } from '../model/Following/IFollowingRepository';
-import FollowingRepository from '../infrastructure/FollowingRepository';
 import TweetDataModel, {
   TweetDataModelProps,
 } from '../infrastructure/TweetDataModel';
 import { ITweetDataModel } from '../infrastructure/ITweetDataModel';
 
-// これは差し替えないやーつなのでインスタンス化せずに静的メソッドで書く
 export default class HomeApplicationService {
-  static readonly userRepository: IUserRepository = new UserRepository();
+  readonly userRepository: IUserRepository;
 
-  static readonly tweetRepository: ITweetRepository = new TweetRepository();
+  readonly tweetRepository: ITweetRepository;
 
-  static readonly followingRepository: IFollowingRepository = new FollowingRepository();
+  constructor() {
+    this.userRepository = new UserRepository();
+    this.tweetRepository = new TweetRepository();
+  }
 
-  static returnTimeline = async (
-    userId: string,
-  ): Promise<ITweetDataModel[]> => {
-    const followingUserId: string[] = HomeApplicationService.followingRepository.returnFollowingUserArray(
-      userId,
-    );
-    const tweetArray = await HomeApplicationService.tweetRepository.returnTweetArray(
-      followingUserId,
-      HomeApplicationService.tweetRepository,
-    );
+  returnTimeline = async (userId: string): Promise<ITweetDataModel[]> => {
+    const tweetArray = await this.tweetRepository.returnTweetArray(userId);
     return Promise.all(
       tweetArray.map(async (tweet) => {
         const { userId: userIdOfTweet, tweetId } = tweet;
-        const userData = await HomeApplicationService.userRepository.returnUserData(
+        const userData = await this.userRepository.getUserDataFromDB(
           userIdOfTweet,
         );
-        const countArray = HomeApplicationService.tweetRepository.returnCountArray(
-          tweetId,
-        );
+        const countArray = this.tweetRepository.returnCountArray(tweetId);
         const props: TweetDataModelProps = {
           ...tweet,
           ...userData,
           ...countArray,
         };
+
+        // todo これ factory でやる DTO の生成って本当に factory でいいんだっけ？(単純にわからない)
         return new TweetDataModel(props);
       }),
     );

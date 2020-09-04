@@ -7,10 +7,7 @@ export interface CountObject {
 }
 
 export interface ITweetRepository {
-  returnTweetArray(
-    userIdArray: string[],
-    tweetRepository: ITweetRepository,
-  ): Promise<Tweet[]>;
+  returnTweetArray(currentUserId: string): Promise<Tweet[]>;
   returnCountArray(tweetId: string): CountObject;
   post(user_id: string, content: string): void;
 }

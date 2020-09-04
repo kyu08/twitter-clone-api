@@ -18,12 +18,17 @@ type TweetData = {
   content: string;
   createdAt: Date;
 };
+
 export default class TweetRepository implements ITweetRepository {
-  static async getTweetArrayFromDB(
-    userIdArray: string[],
-  ): Promise<TweetData[]> {
+  async getTweetArrayFromDB(currentUserId: string): Promise<TweetData[]> {
     const client = new pg.Client(PGClientConfig);
-    const query = { text: 'select * from tweets' };
+    const query = {
+      text:
+        'SELECT * FROM tweets WHERE id IN ' +
+        '(SELECT tweet_id FROM tweet_index WHERE user_id IN ' +
+        '((SELECT follower_user_id from user_relation where following_user_id = $1), $1))',
+      values: [currentUserId],
+    };
 
     client.connect();
     const response: QueryResult<TweetColumns> = await client.query(query);
@@ -39,7 +44,7 @@ export default class TweetRepository implements ITweetRepository {
     });
   }
 
-  static create(tweetProps: TweetProps): Tweet {
+  create(tweetProps: TweetProps): Tweet {
     return new Tweet(tweetProps);
   }
 
@@ -51,35 +56,47 @@ export default class TweetRepository implements ITweetRepository {
     return { replyCount, likeCount, retweetCount };
   }
 
-  async returnTweetArray(
-    userIdArray: string[],
-    tweetRepository: ITweetRepository,
-  ): Promise<Tweet[]> {
-    const tweetDataArray = await TweetRepository.getTweetArrayFromDB(
-      userIdArray,
-    ).catch((e) => e);
-
-    return tweetDataArray.map((tweetData: TweetData) =>
-      TweetRepository.create(tweetData),
+  // instance 化する
+  async returnTweetArray(currentUserId: string): Promise<Tweet[]> {
+    const tweetDataArray = await this.getTweetArrayFromDB(currentUserId).catch(
+      (e) => e,
     );
+
+    return tweetDataArray.map((tweetData: TweetData) => this.create(tweetData));
   }
 
   post(user_id: string, content: string): void {
     const client = new pg.Client(PGClientConfig);
-    const id = uuidv4();
+    const tweet_id = uuidv4();
     const created_at = new Date();
-    const query = {
+    // todo ここ enum つくってmagic number をなくす
+    const category_id = 1;
+    const insertIntoTweetQuery = {
       text: 'INSERT INTO tweets VALUES($1, $2, $3, $4)',
-      values: [id, user_id, content, created_at],
+      values: [tweet_id, user_id, content, created_at],
+    };
+    const insertIntoTweetIndexQuery = {
+      text: 'INSERT INTO tweet_index VALUES($1, $2, $3, $4)',
+      values: [tweet_id, user_id, category_id, created_at],
     };
 
-    client.connect();
-    client
-      .query(query)
-      .then((response: QueryResult) => {
-        console.log(response);
-        client.end();
-      })
-      .catch((e: Error) => console.log(e));
+    (async () => {
+      // index table と tweet table 両方にいれるトランザクション
+      try {
+        await client.connect();
+        await client.query('BEGIN');
+        await client.query(insertIntoTweetQuery);
+        await client.query(insertIntoTweetIndexQuery);
+        await client.query('COMMIT');
+        console.log(
+          'insert to [tweet] table and [tweet_index] table successfully.',
+        );
+      } catch (e) {
+        console.log(e);
+      } finally {
+        await client.end();
+        console.log('client disconnected successfully.');
+      }
+    })();
   }
 }

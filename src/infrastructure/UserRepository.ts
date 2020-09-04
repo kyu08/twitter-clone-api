@@ -34,9 +34,7 @@ export type UserDataFull = {
 };
 
 export default class UserRepository implements IUserRepository {
-  private static async getUserDataFromDB(
-    userId: string,
-  ): Promise<UserDataForTweet> {
+  async getUserDataFromDB(userId: string): Promise<UserDataForTweet> {
     const client = new pg.Client(PGClientConfig);
     const query = {
       text:
@@ -55,10 +53,6 @@ export default class UserRepository implements IUserRepository {
       user_image_url: userImageURL,
     } = response.rows[0];
     return { screenName, userImageURL, userName };
-  }
-
-  returnUserData(userId: string): Promise<UserDataForTweet> {
-    return UserRepository.getUserDataFromDB(userId);
   }
 
   async getFull(userId: string): Promise<UserDataFull> {
