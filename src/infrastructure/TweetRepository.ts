@@ -63,20 +63,35 @@ export default class TweetRepository implements ITweetRepository {
 
   post(user_id: string, content: string): void {
     const client = new pg.Client(PGClientConfig);
-    const id = uuidv4();
+    const tweet_id = uuidv4();
     const created_at = new Date();
-    const query = {
+    // todo ここ enum つくってmagic number をなくす
+    const category_id = 1;
+    const insertIntoTweetQuery = {
       text: 'INSERT INTO tweets VALUES($1, $2, $3, $4)',
-      values: [id, user_id, content, created_at],
+      values: [tweet_id, user_id, content, created_at],
+    };
+    const insertIntoTweetIndexQuery = {
+      text: 'INSERT INTO tweet_category_index VALUES($1, $2, $3, $4)',
+      values: [tweet_id, user_id, category_id, created_at],
     };
 
-    client.connect();
-    client
-      .query(query)
-      .then((response: QueryResult) => {
-        console.log(response);
-        client.end();
-      })
-      .catch((e: Error) => console.log(e));
+    (async () => {
+      try {
+        await client.connect();
+        await client.query('BEGIN');
+        await client.query(insertIntoTweetQuery);
+        await client.query(insertIntoTweetIndexQuery);
+        await client.query('COMMIT');
+        console.log(
+          'insert to [tweet] table and [tweet_category_index] table successfully.',
+        );
+      } catch (e) {
+        console.log(e);
+      } finally {
+        await client.end();
+        console.log('client disconnected successfully.');
+      }
+    })();
   }
 }
