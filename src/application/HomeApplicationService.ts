@@ -2,8 +2,6 @@ import { IUserRepository } from '../model/User/IUserRepository';
 import UserRepository from '../infrastructure/UserRepository';
 import { ITweetRepository } from '../model/Tweet/ITweetRepository';
 import TweetRepository from '../infrastructure/TweetRepository';
-import { IFollowingRepository } from '../model/Following/IFollowingRepository';
-import FollowingRepository from '../infrastructure/FollowingRepository';
 import TweetDataModel, {
   TweetDataModelProps,
 } from '../infrastructure/TweetDataModel';
@@ -14,22 +12,13 @@ export default class HomeApplicationService {
 
   readonly tweetRepository: ITweetRepository;
 
-  readonly followingRepository: IFollowingRepository;
-
   constructor() {
     this.userRepository = new UserRepository();
     this.tweetRepository = new TweetRepository();
-    this.followingRepository = new FollowingRepository();
   }
 
   returnTimeline = async (userId: string): Promise<ITweetDataModel[]> => {
-    const followingUserId: string[] = this.followingRepository.returnFollowingUserArray(
-      userId,
-    );
-    const tweetArray = await this.tweetRepository.returnTweetArray(
-      followingUserId,
-      this.tweetRepository,
-    );
+    const tweetArray = await this.tweetRepository.returnTweetArray(userId);
     return Promise.all(
       tweetArray.map(async (tweet) => {
         const { userId: userIdOfTweet, tweetId } = tweet;
@@ -43,7 +32,7 @@ export default class HomeApplicationService {
           ...countArray,
         };
 
-        // todo これ factory でやる
+        // todo これ factory でやる DTO の生成って本当に factory でいいんだっけ？(単純にわからない)
         return new TweetDataModel(props);
       }),
     );

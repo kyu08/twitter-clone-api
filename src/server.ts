@@ -27,7 +27,7 @@ app.get('/', (req: Express.Request, res: Express.Response) => {
 });
 
 app.listen(3001, () => {
-  console.log('Example app listening on port 3001!');
+  console.log('This app listening on port 3001!');
 });
 
 export default app;

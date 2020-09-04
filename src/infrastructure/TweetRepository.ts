@@ -20,9 +20,15 @@ type TweetData = {
 };
 
 export default class TweetRepository implements ITweetRepository {
-  async getTweetArrayFromDB(userIdArray: string[]): Promise<TweetData[]> {
+  async getTweetArrayFromDB(currentUserId: string): Promise<TweetData[]> {
     const client = new pg.Client(PGClientConfig);
-    const query = { text: 'select * from tweets' };
+    const query = {
+      text:
+        'SELECT * FROM tweets WHERE id IN ' +
+        '(SELECT tweet_id FROM tweet_index WHERE user_id IN ' +
+        '((SELECT follower_user_id from user_relation where following_user_id = $1), $1))',
+      values: [currentUserId],
+    };
 
     client.connect();
     const response: QueryResult<TweetColumns> = await client.query(query);
@@ -50,11 +56,9 @@ export default class TweetRepository implements ITweetRepository {
     return { replyCount, likeCount, retweetCount };
   }
 
-  async returnTweetArray(
-    userIdArray: string[],
-    tweetRepository: ITweetRepository,
-  ): Promise<Tweet[]> {
-    const tweetDataArray = await this.getTweetArrayFromDB(userIdArray).catch(
+  // instance 化する
+  async returnTweetArray(currentUserId: string): Promise<Tweet[]> {
+    const tweetDataArray = await this.getTweetArrayFromDB(currentUserId).catch(
       (e) => e,
     );
 
@@ -72,11 +76,12 @@ export default class TweetRepository implements ITweetRepository {
       values: [tweet_id, user_id, content, created_at],
     };
     const insertIntoTweetIndexQuery = {
-      text: 'INSERT INTO tweet_category_index VALUES($1, $2, $3, $4)',
+      text: 'INSERT INTO tweet_index VALUES($1, $2, $3, $4)',
       values: [tweet_id, user_id, category_id, created_at],
     };
 
     (async () => {
+      // index table と tweet table 両方にいれるトランザクション
       try {
         await client.connect();
         await client.query('BEGIN');
@@ -84,7 +89,7 @@ export default class TweetRepository implements ITweetRepository {
         await client.query(insertIntoTweetIndexQuery);
         await client.query('COMMIT');
         console.log(
-          'insert to [tweet] table and [tweet_category_index] table successfully.',
+          'insert to [tweet] table and [tweet_index] table successfully.',
         );
       } catch (e) {
         console.log(e);
