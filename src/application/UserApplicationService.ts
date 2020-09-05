@@ -23,6 +23,7 @@ export class UserApplicationService {
     currentUserId: string,
   ): Promise<UserDataFull | Error> {
     return this.userRepository.getFullByScreenName(screenName);
+    // todo followInfo もここでかえしていく
     // const indicatingUserId = await this.followRepository.getIdByScreenName(
     //   screenName,
     // );
