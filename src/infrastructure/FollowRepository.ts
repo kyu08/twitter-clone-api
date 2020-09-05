@@ -57,7 +57,6 @@ export class FollowRepository {
     client.connect();
     return client.query(query).then((response: QueryResult) => {
       client.end();
-      console.log(response.rows);
       const res = response.rows;
       if (!res) throw new Error('there is no record.');
       // todo けっこうださいのでかきかえよう

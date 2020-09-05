@@ -11,7 +11,6 @@ router.post('/', async (req, res) => {
     res.status(404);
     res.send('Not Found.');
   }
-  console.log(followerUserId, followingUserId);
   followApplicationService.follow(followingUserId, followerUserId);
   res.send('followed.');
 });

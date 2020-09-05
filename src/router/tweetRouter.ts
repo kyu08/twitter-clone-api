@@ -14,27 +14,23 @@ router.post('/', (req, res) => {
 
 router.get('/:tweetId', (req, res) => {
   console.log('GET /tweet/:tweetId called');
-  console.log(req.params);
   return res.send(req.params);
 });
 
 router.get('/:tweetId/likes', (req, res) => {
   console.log('GET /tweet/:tweetId/likes called');
-  console.log(req.params);
   const hoge = ['taro', 'jiro'];
   return res.send(hoge);
 });
 
 router.get('/:tweetId/retweets', (req, res) => {
   console.log('GET /tweet/:tweetId/retweets called');
-  console.log(req.params);
   const hoge = ['taro', 'jiro'];
   return res.send(`${hoge}RT`);
 });
 
 router.delete('/:tweetId', (req, res) => {
   console.log('DELETE /tweet/:tweetId called');
-  console.log(req.params);
   return res.send(`DELETE -> ${req.params}`);
 });
 
