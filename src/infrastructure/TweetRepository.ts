@@ -24,10 +24,11 @@ export default class TweetRepository implements ITweetRepository {
     const client = new pg.Client(PGClientConfig);
     const query = {
       text:
-        // WITH で書くのもいいかも
         'SELECT * FROM tweets WHERE id IN ' +
         '(SELECT tweet_id FROM tweet_index WHERE user_id IN ' +
-        '((SELECT follower_user_id from user_relation where following_user_id = $1), $1))',
+        '(SELECT follower_user_id from user_relation where following_user_id = $1 ' +
+        'UNION SELECT id as follower_user_id from users WHERE id = $1))',
+
       values: [currentUserId],
     };
 
@@ -62,7 +63,6 @@ export default class TweetRepository implements ITweetRepository {
     const tweetDataArray = await this.getTweetArrayFromDB(currentUserId).catch(
       (e) => e,
     );
-
     return tweetDataArray.map((tweetData: TweetData) => this.create(tweetData));
   }
 
