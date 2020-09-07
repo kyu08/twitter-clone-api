@@ -1,5 +1,6 @@
 import * as Express from 'express';
 import { UserApplicationService } from '../application/UserApplicationService';
+import { UserDataModel } from '../infrastructure/UserDataModel';
 
 const router = Express.Router();
 const userApplicationService = new UserApplicationService();
@@ -22,7 +23,9 @@ router.get('/screenName/full', async (req, res) => {
       res.status(404);
       res.send('Not Found.');
     });
-  res.send(userData);
+  if (userData instanceof UserDataModel) res.send(userData.build());
+  res.status(404);
+  res.send('Not Found.');
 });
 
 export default router;

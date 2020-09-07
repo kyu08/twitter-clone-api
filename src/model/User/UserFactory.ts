@@ -1,10 +1,6 @@
 import UserId from './UserId/UserId';
 import { User } from './User';
 import Profile from './Profile/Profile';
-import Birthday from './Profile/Birthday';
-import Day from './Profile/Birthday/Day';
-import Year from './Profile/Birthday/Year';
-import Month from './Profile/Birthday/Month';
 import Website from './Profile/Website';
 import UserLocation from './Profile/UserLocation';
 import Bio from './Profile/Bio';
@@ -12,8 +8,8 @@ import UserImageURL from './Profile/UserImageURL';
 import HeaderImageURL from './Profile/HeaderImageURL';
 import UserName from './Profile/UserName';
 import ScreenName from './Profile/ScreenName';
-import { dateToString } from '../../utils/Util';
 import { UserDataModel } from '../../infrastructure/UserDataModel';
+import Birthday from './Profile/Birthday';
 
 export type UserPropsDetail = {
   id: string;
@@ -60,17 +56,8 @@ export class UserFactory {
       bio: new Bio(bio),
       userLocation: new UserLocation(userLocation),
       website: new Website(website),
+      birthday: new Birthday(new Date(birthdayProp)),
     };
-    if (birthdayProp) {
-      const birthdayString = dateToString(birthdayProp);
-      const date = new Date(birthdayString);
-      const year = new Year(date.getFullYear());
-      const month = new Month(date.getMonth() + 1);
-      const day = new Day(date.getDate());
-      Object.assign(profileProps, {
-        birthday: new Birthday({ year, month, day }),
-      });
-    }
     const profile = new Profile(profileProps);
 
     return new User({

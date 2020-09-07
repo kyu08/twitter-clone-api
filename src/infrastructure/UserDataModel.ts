@@ -1,5 +1,21 @@
 import { IUser } from '../model/User/IUser';
-import { BirthdayProps } from '../model/User/Profile/Birthday';
+import { dateToString } from '../utils/Util';
+
+type UserPropsDetail = {
+  id: string;
+  screen_name: string;
+  user_name: string;
+  header_image_url: string;
+  user_image_url: string;
+  bio: string;
+  birthday: string;
+  user_location: string;
+  website: string;
+  created_at?: string;
+  followerCount: number;
+  followingCount: number;
+  tweetCount: number;
+};
 
 export class UserDataModel {
   readonly screenName: string;
@@ -12,7 +28,7 @@ export class UserDataModel {
 
   readonly bio: string;
 
-  readonly birthday?: BirthdayProps;
+  readonly birthday: string;
 
   readonly userLocation: string;
 
@@ -46,13 +62,6 @@ export class UserDataModel {
       userName,
       website,
     } = profile;
-    if (birthday) {
-      this.birthday = {
-        year: birthday.year.year,
-        month: birthday.month.month,
-        day: birthday.day.day,
-      };
-    }
     this.screenName = screenName.screenName;
     this.userName = userName.userName;
     this.headerImageURL = headerImageURL.headerImageURL;
@@ -64,5 +73,25 @@ export class UserDataModel {
     this.followerCount = followerCount;
     this.followingCount = followingCount;
     this.tweetCount = tweetCount;
+    this.birthday = dateToString(birthday.birthday);
+  }
+
+  build(): UserPropsDetail {
+    return {
+      id: this.userId,
+      screen_name: this.screenName,
+      user_name: this.userName,
+      header_image_url: this.headerImageURL,
+      user_image_url: this.userImageURL,
+      bio: this.bio,
+      birthday: this.birthday,
+      user_location: this.userLocation,
+      website: this.website,
+      // todo created at ももってくる
+      // created_at: this,
+      followerCount: this.followerCount,
+      followingCount: this.followingCount,
+      tweetCount: this.tweetCount,
+    };
   }
 }
