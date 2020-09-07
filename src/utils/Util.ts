@@ -15,3 +15,7 @@ export const ensurePropsContainsNoUndefined = <T>(props: T) => {
     }
   });
 };
+
+export const dateToString = (date: Date): string => {
+  return JSON.parse(JSON.stringify(date));
+};

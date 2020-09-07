@@ -15,9 +15,9 @@ router.get('/userId/:userId/full', async (req, res) => {
 
 router.get('/screenName/full', async (req, res) => {
   console.log('GET /user/:screenName/full called');
-  const { screenName, currentUserId } = req.query;
+  const { screenName } = req.query;
   const userData = await userApplicationService
-    .getFullByScreenName(String(screenName), String(currentUserId))
+    .getFullByScreenName(String(screenName))
     .catch((e) => {
       res.status(404);
       res.send('Not Found.');
