@@ -26,12 +26,8 @@ export class UserApplicationService {
   async getFullByScreenName(
     screenName: string,
   ): Promise<UserDataModel | Error> {
-    // async getFullByScreenName(screenName: string): Promise<UserDataFull | Error> {
-    console.log(UserDataModel);
     const userProps = await this.userRepository.getFullByScreenName(screenName);
     const user = this.userFactory.toInstance(userProps);
     return this.userFactory.toDataModel(user);
-    // return this.userRepository.getFullByScreenName(screenName);
-    // todo followInfo もここでかえしていく
   }
 }

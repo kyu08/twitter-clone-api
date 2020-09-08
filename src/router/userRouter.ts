@@ -23,7 +23,10 @@ router.get('/screenName/full', async (req, res) => {
       res.status(404);
       res.send('Not Found.');
     });
-  if (userData instanceof UserDataModel) res.send(userData.build());
+  if (userData instanceof UserDataModel) {
+    res.send(userData.toJSON());
+    return;
+  }
   res.status(404);
   res.send('Not Found.');
 });

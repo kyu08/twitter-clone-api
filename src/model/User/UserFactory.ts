@@ -26,6 +26,7 @@ export type UserPropsDetail = {
   followingCount: number;
   tweetCount: number;
   // todo ~List? Set?
+  // todo created at ももってくるようにする (Map or object にする)
   follower: string[];
   following: string[];
 };
@@ -45,9 +46,9 @@ export class UserFactory {
     followerCount,
     followingCount,
     tweetCount,
-  }: // follower,
-  // following,
-  UserPropsDetail): User {
+    following,
+    follower,
+  }: UserPropsDetail): User {
     const profileProps = {
       screenName: new ScreenName(screenName),
       userName: new UserName(userName),
@@ -59,6 +60,14 @@ export class UserFactory {
       birthday: new Birthday(new Date(birthdayProp)),
     };
     const profile = new Profile(profileProps);
+    const followingMapProps = following.map<[UserId, Date]>((f) => {
+      return [new UserId(f), new Date()];
+    });
+    const followerMapProps = follower.map<[UserId, Date]>((f) => {
+      return [new UserId(f), new Date()];
+    });
+    const followingMap: Map<UserId, Date> = new Map(followingMapProps);
+    const followerMap: Map<UserId, Date> = new Map(followerMapProps);
 
     return new User({
       profile,
@@ -66,6 +75,8 @@ export class UserFactory {
       followingCount,
       tweetCount,
       userId: new UserId(userId),
+      followerMap,
+      followingMap,
     });
   }
 

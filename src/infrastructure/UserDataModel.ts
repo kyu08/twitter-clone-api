@@ -1,21 +1,24 @@
 import { IUser } from '../model/User/IUser';
 import { dateToString } from '../utils/Util';
+import UserId from '../model/User/UserId/UserId';
 
-type UserPropsDetail = {
-  id: string;
-  screen_name: string;
-  user_name: string;
-  header_image_url: string;
-  user_image_url: string;
-  bio: string;
-  birthday: string;
-  user_location: string;
-  website: string;
-  created_at?: string;
-  followerCount: number;
-  followingCount: number;
-  tweetCount: number;
-};
+interface UserPropsDetail {
+  readonly id: string;
+  readonly screen_name: string;
+  readonly user_name: string;
+  readonly header_image_url: string;
+  readonly user_image_url: string;
+  readonly bio: string;
+  readonly birthday: string;
+  readonly user_location: string;
+  readonly website: string;
+  readonly created_at?: string;
+  readonly followerCount: number;
+  readonly followingCount: number;
+  readonly tweetCount: number;
+  readonly followingMap: Map<UserId, Date>;
+  readonly followerMap: Map<UserId, Date>;
+}
 
 export class UserDataModel {
   readonly screenName: string;
@@ -45,12 +48,18 @@ export class UserDataModel {
 
   readonly tweetCount: number;
 
+  readonly followingMap: Map<UserId, Date>;
+
+  readonly followerMap: Map<UserId, Date>;
+
   constructor({
     profile,
     userId,
     followerCount,
     followingCount,
     tweetCount,
+    followingMap,
+    followerMap,
   }: IUser) {
     const {
       bio,
@@ -74,6 +83,8 @@ export class UserDataModel {
     this.followingCount = followingCount;
     this.tweetCount = tweetCount;
     this.birthday = dateToString(birthday.birthday);
+    this.followerMap = followerMap;
+    this.followingMap = followingMap;
   }
 
   build(): UserPropsDetail {
@@ -92,6 +103,20 @@ export class UserDataModel {
       followerCount: this.followerCount,
       followingCount: this.followingCount,
       tweetCount: this.tweetCount,
+      followerMap: this.followerMap,
+      followingMap: this.followingMap,
     };
+  }
+
+  toJSON(): string {
+    const object = this.build();
+    const mapToArray = {
+      ...object,
+      ...{
+        followerMap: Array.from(object.followerMap),
+        followingMap: Array.from(object.followingMap),
+      },
+    };
+    return JSON.stringify(mapToArray);
   }
 }
