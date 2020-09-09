@@ -8,10 +8,16 @@ const userApplicationService = new UserApplicationService();
 router.get('/userId/:userId/full', async (req, res) => {
   console.log('GET /user/userId/:userId/full called');
   const { userId } = req.params;
-  const userData = await userApplicationService
-    .getFull(userId)
-    .catch((e) => console.log(e));
-  res.send(userData);
+  const userData = await userApplicationService.getFull(userId).catch((e) => {
+    res.status(404);
+    res.send('Not Found.');
+  });
+  if (userData instanceof UserDataModel) {
+    res.send(userData.toJSON());
+    return;
+  }
+  res.status(404);
+  res.send('Not Found.');
 });
 
 router.get('/screenName/full', async (req, res) => {

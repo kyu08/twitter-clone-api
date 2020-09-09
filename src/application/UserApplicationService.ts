@@ -1,5 +1,5 @@
 import { IUserRepository } from '../model/User/IUserRepository';
-import UserRepository, { UserDataFull } from '../infrastructure/UserRepository';
+import UserRepository from '../infrastructure/UserRepository';
 import { FollowRepository } from '../infrastructure/FollowRepository';
 import { UserFactory } from '../model/User/UserFactory';
 import { UserDataModel } from '../infrastructure/UserDataModel';
@@ -17,12 +17,12 @@ export class UserApplicationService {
     this.userFactory = new UserFactory();
   }
 
-  // todo currentUserId はないかもしれないから optional にいずれしよう(ログインしてない人が profile を見たいときとか)
-  async getFull(userId: string): Promise<UserDataFull> {
-    return this.userRepository.getFull(userId);
+  async getFull(userId: string): Promise<UserDataModel | Error> {
+    const userProps = await this.userRepository.getFull(userId);
+    const user = this.userFactory.toInstance(userProps);
+    return this.userFactory.toDataModel(user);
   }
 
-  // followInfo も merge して返す
   async getFullByScreenName(
     screenName: string,
   ): Promise<UserDataModel | Error> {

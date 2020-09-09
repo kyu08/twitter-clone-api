@@ -60,14 +60,14 @@ export class UserFactory {
       birthday: new Birthday(new Date(birthdayProp)),
     };
     const profile = new Profile(profileProps);
-    const followingMapProps = following.map<[UserId, Date]>((f) => {
-      return [new UserId(f), new Date()];
+    const followingMapProps = following.map<[string, Date]>((f) => {
+      return [f, new Date()];
     });
-    const followerMapProps = follower.map<[UserId, Date]>((f) => {
-      return [new UserId(f), new Date()];
+    const followerMapProps = follower.map<[string, Date]>((f) => {
+      return [f, new Date()];
     });
-    const followingMap: Map<UserId, Date> = new Map(followingMapProps);
-    const followerMap: Map<UserId, Date> = new Map(followerMapProps);
+    const followingMap: Map<string, Date> = new Map(followingMapProps);
+    const followerMap: Map<string, Date> = new Map(followerMapProps);
 
     return new User({
       profile,

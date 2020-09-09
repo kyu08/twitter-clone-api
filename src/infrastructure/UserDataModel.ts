@@ -1,6 +1,5 @@
 import { IUser } from '../model/User/IUser';
 import { dateToString } from '../utils/Util';
-import UserId from '../model/User/UserId/UserId';
 
 interface UserPropsDetail {
   readonly id: string;
@@ -16,8 +15,8 @@ interface UserPropsDetail {
   readonly followerCount: number;
   readonly followingCount: number;
   readonly tweetCount: number;
-  readonly followingMap: Map<UserId, Date>;
-  readonly followerMap: Map<UserId, Date>;
+  readonly followingMap: Map<string, Date>;
+  readonly followerMap: Map<string, Date>;
 }
 
 export class UserDataModel {
@@ -48,9 +47,9 @@ export class UserDataModel {
 
   readonly tweetCount: number;
 
-  readonly followingMap: Map<UserId, Date>;
+  readonly followingMap: Map<string, Date>;
 
-  readonly followerMap: Map<UserId, Date>;
+  readonly followerMap: Map<string, Date>;
 
   constructor({
     profile,

@@ -57,7 +57,7 @@ export default class UserRepository implements IUserRepository {
     return { screenName, userImageURL, userName };
   }
 
-  // todo getFullByScreenName と共通化しよう
+  // todo　refactor getFullByScreenName と共通化しよう
   async getFull(userId: string): Promise<UserDataFull> {
     const client = new pg.Client(PGClientConfig);
     const selectUserQuery = {
@@ -125,6 +125,7 @@ export default class UserRepository implements IUserRepository {
     return { ...userResponse.rows[0], ...countObject, ...followObject };
   }
 
+  // todo refactor getFull と共通部分はまとめる
   async getFullByScreenName(screenName: string): Promise<UserDataFull> {
     const client = new pg.Client(PGClientConfig);
     const selectUserQuery = {

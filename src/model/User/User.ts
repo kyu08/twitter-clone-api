@@ -9,8 +9,8 @@ interface UserProps {
   readonly followerCount: number;
   readonly followingCount: number;
   readonly tweetCount: number;
-  readonly followingMap: Map<UserId, Date>;
-  readonly followerMap: Map<UserId, Date>;
+  readonly followingMap: Map<string, Date>;
+  readonly followerMap: Map<string, Date>;
 }
 
 // todo 集約なので private にしよう
@@ -25,9 +25,9 @@ export class User implements IUser {
 
   readonly userId: UserId;
 
-  readonly followingMap: Map<UserId, Date>;
+  readonly followingMap: Map<string, Date>;
 
-  readonly followerMap: Map<UserId, Date>;
+  readonly followerMap: Map<string, Date>;
 
   constructor(props: UserProps) {
     ensurePropsContainsNoUndefined<UserProps>(props);
