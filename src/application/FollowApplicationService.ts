@@ -1,7 +1,4 @@
-import {
-  FollowInfo,
-  FollowRepository,
-} from '../infrastructure/FollowRepository';
+import { FollowRepository } from '../infrastructure/FollowRepository';
 
 export class FollowApplicationService {
   readonly followRepository: FollowRepository;
@@ -36,15 +33,5 @@ export class FollowApplicationService {
     //   return;
     // }
     this.followRepository.unFollow(following_user_id, follower_user_id);
-  }
-
-  getFollowInfo(
-    following_user_id: string,
-    follower_user_id: string,
-  ): Promise<FollowInfo | Error> {
-    return this.followRepository.getFollowInfo(
-      following_user_id,
-      follower_user_id,
-    );
   }
 }

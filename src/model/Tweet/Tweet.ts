@@ -16,8 +16,7 @@ export default class Tweet implements ITweet {
 
   readonly userId: string;
 
-  constructor(props: TweetProps) {
-    const { content, tweetId, createdAt, userId } = props;
+  constructor({ content, tweetId, createdAt, userId }: TweetProps) {
     this.content = content;
     this.tweetId = tweetId;
     this.createdAt = createdAt;
