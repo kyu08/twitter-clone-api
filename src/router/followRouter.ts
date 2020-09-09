@@ -26,26 +26,4 @@ router.delete('/', async (req, res) => {
   res.send('unFollowed.');
 });
 
-router.get('/', async (req, res) => {
-  console.log('get /follow called.');
-  const { followingUserId, followerUserId } = req.query;
-  if (followingUserId === undefined || followerUserId === undefined) {
-    res.status(404);
-    res.send('Not Found.');
-  }
-
-  const followInfo = await followApplicationService
-    .getFollowInfo(String(followingUserId), String(followerUserId))
-    .catch((e) => {
-      console.log(e);
-    });
-  // todo あまりよくない気はしている
-  if (typeof followInfo === 'object') {
-    res.send(followInfo);
-    return;
-  }
-  res.status(404);
-  res.send('Not Found.');
-});
-
 export default router;
