@@ -22,8 +22,6 @@ export type UserPropsDetail = {
   user_location: string;
   website: string;
   created_at: Date;
-  followerCount: number;
-  followingCount: number;
   tweetCount: number;
   // todo ~List? Set?
   // todo created at ももってくるようにする (Map or object にする)
@@ -43,8 +41,6 @@ export class UserFactory {
     user_location: userLocation,
     website,
     // created_at: createdAt,
-    followerCount,
-    followingCount,
     tweetCount,
     following,
     follower,
@@ -71,8 +67,6 @@ export class UserFactory {
 
     return new User({
       profile,
-      followerCount,
-      followingCount,
       tweetCount,
       userId: new UserId(userId),
       followerMap,

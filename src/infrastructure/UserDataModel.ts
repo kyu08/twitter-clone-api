@@ -12,8 +12,6 @@ interface UserPropsDetail {
   readonly user_location: string;
   readonly website: string;
   readonly created_at?: string;
-  readonly followerCount: number;
-  readonly followingCount: number;
   readonly tweetCount: number;
   readonly followingMap: Map<string, Date>;
   readonly followerMap: Map<string, Date>;
@@ -39,12 +37,6 @@ export class UserDataModel {
   readonly userId: string;
 
   // todo 本当は ↓この3つ、 toLocaleString() して string として扱いたいかもしれない?
-  // todo User, UserDataModel に followingList, followerList をもたせる
-  // followerCount, followingCount はメソッドを通して提供する
-  readonly followerCount: number;
-
-  readonly followingCount: number;
-
   readonly tweetCount: number;
 
   readonly followingMap: Map<string, Date>;
@@ -54,8 +46,6 @@ export class UserDataModel {
   constructor({
     profile,
     userId,
-    followerCount,
-    followingCount,
     tweetCount,
     followingMap,
     followerMap,
@@ -78,8 +68,6 @@ export class UserDataModel {
     this.userLocation = userLocation.userLocation;
     this.website = website.website;
     this.userId = userId.userId;
-    this.followerCount = followerCount;
-    this.followingCount = followingCount;
     this.tweetCount = tweetCount;
     this.birthday = dateToString(birthday.birthday);
     this.followerMap = followerMap;
@@ -99,8 +87,6 @@ export class UserDataModel {
       website: this.website,
       // todo created at ももってくる
       // created_at: this,
-      followerCount: this.followerCount,
-      followingCount: this.followingCount,
       tweetCount: this.tweetCount,
       followerMap: this.followerMap,
       followingMap: this.followingMap,

@@ -6,8 +6,6 @@ import Profile from './Profile/Profile';
 interface UserProps {
   readonly profile: Profile;
   readonly userId: UserId;
-  readonly followerCount: number;
-  readonly followingCount: number;
   readonly tweetCount: number;
   readonly followingMap: Map<string, Date>;
   readonly followerMap: Map<string, Date>;
@@ -15,10 +13,6 @@ interface UserProps {
 
 // todo 集約なので private にしよう
 export class User implements IUser {
-  readonly followerCount: number;
-
-  readonly followingCount: number;
-
   readonly tweetCount: number;
 
   readonly profile: Profile;
@@ -31,17 +25,7 @@ export class User implements IUser {
 
   constructor(props: UserProps) {
     ensurePropsContainsNoUndefined<UserProps>(props);
-    const {
-      followerCount,
-      followingCount,
-      tweetCount,
-      profile,
-      userId,
-      followingMap,
-      followerMap,
-    } = props;
-    this.followerCount = followerCount;
-    this.followingCount = followingCount;
+    const { tweetCount, profile, userId, followingMap, followerMap } = props;
     this.tweetCount = tweetCount;
     this.profile = profile;
     this.userId = userId;

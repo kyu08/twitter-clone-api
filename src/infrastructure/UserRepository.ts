@@ -28,8 +28,6 @@ export type UserDataFull = {
   user_location: string;
   website: string;
   created_at: Date;
-  followingCount: number;
-  followerCount: number;
   tweetCount: number;
   follower: string[];
   following: string[];
@@ -114,8 +112,6 @@ export default class UserRepository implements IUserRepository {
     });
     const tweetCount = tweetCountResponse.rows[0].count;
     const countObject = {
-      followerCount: followerUserIdArray.length,
-      followingCount: followingUserIdArray.length,
       tweetCount,
     };
     const followObject = {
@@ -182,8 +178,6 @@ export default class UserRepository implements IUserRepository {
     });
     const tweetCount = tweetCountResponse.rows[0].count;
     const countObject = {
-      followerCount: followerUserIdArray.length,
-      followingCount: followingUserIdArray.length,
       tweetCount,
     };
     const followObject = {
