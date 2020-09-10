@@ -1,8 +1,4 @@
-// eslint-disable-next-line import/no-cycle
-import {
-  UserDataForTweet,
-  UserDataFull,
-} from '../../infrastructure/UserRepository';
+import { UserDataForTweet, UserDataFull } from './User';
 
 export interface IUserRepository {
   getUserDataFromDB(userId: string): Promise<UserDataForTweet>;

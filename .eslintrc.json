@@ -31,6 +31,7 @@
     "import/prefer-default-export": "off",
     "@typescript-eslint/camelcase": "off",
     "class-methods-use-this": "off",
+    "consistent-return": "off",
     "prettier/prettier": [
       "error",
       {
@@ -47,7 +48,8 @@
         "@typescript-eslint/interface-name-prefix": "off",
         "import/prefer-default-export": "off",
         "@typescript-eslint/camelcase": "off",
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "consistent-return": "off"
       }
     ]
   }

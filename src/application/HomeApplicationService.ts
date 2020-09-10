@@ -6,6 +6,7 @@ import TweetDataModel, {
   TweetDataModelProps,
 } from '../infrastructure/TweetDataModel';
 import { ITweetDataModel } from '../infrastructure/ITweetDataModel';
+import { ITweet } from '../model/Tweet/ITweet';
 
 export default class HomeApplicationService {
   readonly userRepository: IUserRepository;
@@ -18,9 +19,11 @@ export default class HomeApplicationService {
   }
 
   returnTimeline = async (userId: string): Promise<ITweetDataModel[]> => {
-    const tweetArray = await this.tweetRepository.returnTweetArray(userId);
+    const tweetArray = await this.tweetRepository
+      .returnTweetArray(userId)
+      .catch((e) => e);
     return Promise.all(
-      tweetArray.map(async (tweet) => {
+      tweetArray.map(async (tweet: ITweet) => {
         const { userId: userIdOfTweet, tweetId } = tweet;
         const userData = await this.userRepository.getUserDataFromDB(
           userIdOfTweet,

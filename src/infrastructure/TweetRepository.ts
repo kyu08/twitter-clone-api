@@ -25,16 +25,17 @@ export default class TweetRepository implements ITweetRepository {
     const query = {
       text:
         'SELECT * FROM tweets WHERE id IN ' +
-        '(SELECT tweet_id FROM tweet_index WHERE user_id IN ' +
-        '(SELECT follower_user_id from user_relation where following_user_id = $1 ' +
-        'UNION SELECT id as follower_user_id from users WHERE id = $1))',
+        '(SELECT tweet_id FROM tweet_index WHERE user_id = $1 OR ' +
+        'user_id IN (SELECT follower_user_id from user_relation where following_user_id = $1))',
 
       values: [currentUserId],
     };
 
-    client.connect();
-    const response: QueryResult<TweetColumns> = await client.query(query);
-    client.end();
+    await client.connect();
+    const response: QueryResult<TweetColumns> = await client
+      .query(query)
+      .catch((e) => e);
+    await client.end();
     return response.rows.map((row) => {
       const { id, user_id, content, created_at } = row;
       return {

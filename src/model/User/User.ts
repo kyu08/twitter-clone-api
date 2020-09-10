@@ -3,6 +3,28 @@ import { IUser } from './IUser';
 import UserId from './UserId/UserId';
 import Profile from './Profile/Profile';
 
+export type UserDataForTweet = {
+  screenName: string;
+  userImageURL: string;
+  userName: string;
+};
+
+export type UserDataFull = {
+  id: string;
+  screen_name: string;
+  user_name: string;
+  header_image_url: string;
+  user_image_url: string;
+  bio: string;
+  birthday: Date;
+  user_location: string;
+  website: string;
+  created_at: Date;
+  tweetCount: number;
+  follower: string[];
+  following: string[];
+};
+
 interface UserProps {
   readonly profile: Profile;
   readonly userId: UserId;

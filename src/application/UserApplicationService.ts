@@ -18,7 +18,7 @@ export class UserApplicationService {
   }
 
   async getFull(userId: string): Promise<UserDataModel | Error> {
-    const userProps = await this.userRepository.getFull(userId);
+    const userProps = await this.userRepository.getFull(userId).catch((e) => e);
     const user = this.userFactory.toInstance(userProps);
     return this.userFactory.toDataModel(user);
   }
@@ -26,7 +26,9 @@ export class UserApplicationService {
   async getFullByScreenName(
     screenName: string,
   ): Promise<UserDataModel | Error> {
-    const userProps = await this.userRepository.getFullByScreenName(screenName);
+    const userProps = await this.userRepository
+      .getFullByScreenName(screenName)
+      .catch((e) => e);
     const user = this.userFactory.toInstance(userProps);
     return this.userFactory.toDataModel(user);
   }
