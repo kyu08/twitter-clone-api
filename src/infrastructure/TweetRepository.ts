@@ -32,9 +32,11 @@ export default class TweetRepository implements ITweetRepository {
       values: [currentUserId],
     };
 
-    client.connect();
-    const response: QueryResult<TweetColumns> = await client.query(query);
-    client.end();
+    await client.connect();
+    const response: QueryResult<TweetColumns> = await client
+      .query(query)
+      .catch((e) => e);
+    await client.end();
     return response.rows.map((row) => {
       const { id, user_id, content, created_at } = row;
       return {
