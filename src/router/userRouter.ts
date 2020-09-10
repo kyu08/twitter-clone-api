@@ -26,8 +26,7 @@ router.get('/screenName/full', async (req, res) => {
   const userData = await userApplicationService
     .getFullByScreenName(String(screenName))
     .catch((e) => {
-      res.status(404);
-      res.send('Not Found.');
+      console.log('[warning]There is no user has ScreenName you requested.');
     });
   if (userData instanceof UserDataModel) {
     res.send(userData.toJSON());
